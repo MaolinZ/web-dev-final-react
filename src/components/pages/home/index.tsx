@@ -23,7 +23,7 @@ export default function Home() {
                         className={"flex bg-amber-100 items-center " +
                             "justify-center mb-2 py-2 rounded-full" +
                             " font-sans"}
-                        to={"/landing"}>ENTER AS GUEST</Link>
+                        to={"/rooms"}>ENTER AS GUEST</Link>
                     <div className={"flex items-center justify-center pb-4"}>
                         <Link className={"bg-white rounded-full w-full mr-4" +
                             " py-2 px-8"} to={"/login"}>LOGIN</Link>
