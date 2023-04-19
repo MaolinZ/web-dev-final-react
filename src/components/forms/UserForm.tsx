@@ -1,11 +1,35 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
+import { createUser, login } from "../services/auth-services";
 
 export default function UserForm(props: { submitMethod: string }) {
     //const nav = useNavigate();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [errorFlag, setErrorFlag] = useState<boolean>(false);
+
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        login({ email, password })
+            .then()
+            .catch(err => console.log(err));
+    }
+
+    const handleCreateUser = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (password !== "" && confirmPassword !== "" && password === confirmPassword) {
+            createUser({ email, password })
+                .then((response) => {
+                    if (response === -1) {
+                        setErrorFlag(true);
+                    } else {
+                        console.log(response)
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+    }
 
     return (
         <div>
@@ -13,18 +37,18 @@ export default function UserForm(props: { submitMethod: string }) {
                 <span>{props.submitMethod === 'login' ? "Login now!" : "Sign up now!"}</span>
             </div>
             <div>
-                <form>
+                <form onSubmit={props.submitMethod === 'login' ? handleLogin : handleCreateUser}>
                     <div>
                         <label htmlFor="email">Email</label>
                     </div>
                     <div>
-                        <input id="email" type="email" />
+                        <input id="email" type="email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div>
                         <label htmlFor="password">Password</label>
                     </div>
                     <div>
-                        <input id="password" type="password" />
+                        <input id="password" type="password" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     {props.submitMethod !== 'login' ?
                         <div>
@@ -32,7 +56,7 @@ export default function UserForm(props: { submitMethod: string }) {
                                 <label htmlFor="confirmPassword">Confirm Password</label>
                             </div>
                             <div>
-                                <input id="confirmPassword" type="password" />
+                                <input id="confirmPassword" type="password" onChange={(e) => setConfirmPassword(e.target.value)} />
                             </div>
                         </div> : <></>
                     }
@@ -40,6 +64,9 @@ export default function UserForm(props: { submitMethod: string }) {
                         <button type="submit">Submit</button>
                     </div>
                 </form>
+                <div className={errorFlag ? "" : "hidden"}>
+                    <span>Email already in use!</span>
+                </div>
             </div>
         </div>
     );
