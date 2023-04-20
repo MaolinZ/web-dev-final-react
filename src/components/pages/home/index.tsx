@@ -21,16 +21,14 @@ export default function Home() {
                 <div className={"w-full"}>
                     <Link
                         className={"flex bg-amber-100 items-center " +
-                            "justify-center mb-2 py-2 rounded-full" +
+                            "justify-center mb-3 py-2 rounded-full" +
                             " font-sans"}
                         to={"/rooms"}>ENTER AS GUEST</Link>
-                    <div className={"flex items-center justify-center pb-4"}>
+                    <div className={"flex items-center justify-center"}>
                         <Link className={"bg-white rounded-full w-full mr-4" +
                             " py-2 px-8"} to={"/login"}>LOGIN</Link>
                         <Link className={"bg-spotify-green rounded-full" +
-                            " w-full" +
-                            " py-2" +
-                            " px-8"} to={"/signup"}>SIGN UP</Link>
+                            " w-full py-2 px-8"} to={"/signup"}>SIGN UP</Link>
                     </div>
                 </div>
             </div>
