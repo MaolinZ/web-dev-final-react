@@ -9,6 +9,7 @@ import SignUp from "./components/pages/SignUp";
 import Rooms from "./components/pages/rooms";
 import SearchResults from "./components/pages/search-results";
 import Details from "./components/pages/search-results/details";
+import Profile from './components/pages/Profile';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                            element={<SearchResults/>}/>
                     <Route path={"/details/:uri"} element={<Details/>}/>
                     <Route path={'*'} element={<Navigate to={'/rooms'}/>}/>
+                    <Route path={"/profile"} element={<Profile/>} />
                 </Routes>
             </BrowserRouter>
         </div>
