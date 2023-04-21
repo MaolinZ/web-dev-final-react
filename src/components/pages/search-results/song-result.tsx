@@ -29,20 +29,15 @@ export default function SongResult(props: { song: SpotifyApi.TrackObjectFull }) 
     }
 
     return (
-        <div className={'hover:bg-spotify-gray px-3'}>
-            <div className={'song-result flex justify-around items-center' +
-                ' cursor-default py-4 px-10'}
-                 onClick={() => {clickSong()}}>
-                <div className={'flex mr-auto items-center'}>
-                    <img
-                        className={'w-12 h-12'}
-                        src={image}
-                        alt=""/>
-                    <div className={'ml-4'}>
-                        <p className={'text-left text-sm text-white'}>{trunc_name}</p>
-                        <p className={'text-left text-sm text-gray-500'}>{trunc_artists}</p>
-                    </div>
-                </div>
+        <div className={'flex mr-auto items-center w-full p-4'}
+             onClick={() => {clickSong()}}>
+            <img
+                className={'w-12 h-12'}
+                src={image}
+                alt=""/>
+            <div className={'ml-4'}>
+                <p className={'text-left text-sm text-white'}>{trunc_name}</p>
+                <p className={'text-left text-sm text-gray-500'}>{trunc_artists}</p>
             </div>
         </div>
     )

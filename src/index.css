@@ -6,7 +6,7 @@ input:focus {
   outline: none;
 }
 
-.song-result {
+.result-item {
   border-top: #212121 1px solid;
 }
 
