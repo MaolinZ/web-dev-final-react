@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authState, createUser, login } from "../services/auth-services";
+import { createUser, login } from "../services/auth-services";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../config/firebase";
 
@@ -11,12 +11,12 @@ export default function UserForm(props: { submitMethod: string }) {
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [errorFlag, setErrorFlag] = useState<boolean>(false);
 
-    const [testElem, setTestElem] = useState<string>("");
-
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         login({ email, password })
-            .then()
+            .then(() => {
+                
+            })
             .catch(err => console.log(err));
     }
 
@@ -28,6 +28,7 @@ export default function UserForm(props: { submitMethod: string }) {
                     nav("/profile");
                 })
                 .catch(err => {
+                    setErrorFlag(true);
                     if (err.code === "auth/email-already-in-use") {
                         setErrorFlag(true);
                     }
@@ -39,9 +40,9 @@ export default function UserForm(props: { submitMethod: string }) {
     }
 
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user !== null) {
-                setTestElem(user.uid);
+                
             }
         })
     }, []);
@@ -79,11 +80,8 @@ export default function UserForm(props: { submitMethod: string }) {
                         <button type="submit">Submit</button>
                     </div>
                 </form>
-                <div className={errorFlag ? "" : "hidden"}>
+                <div className={errorFlag ? "text-red-500" : "hidden"}>
                     <span>Email already in use!</span>
-                </div>
-                <div className="text-red-700">
-                    <h1>{testElem}</h1>
                 </div>
             </div>
         </div>
