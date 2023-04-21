@@ -15,7 +15,7 @@ export default function UserForm(props: { submitMethod: string }) {
         event.preventDefault();
         login({ email, password })
             .then(() => {
-                
+                nav("/landing");
             })
             .catch(err => console.log(err));
     }
