@@ -1,7 +1,7 @@
 import axios from "axios"
 
 // TODO: Get access token from db
-const ACCESS_TOKEN = 'BQBc9TqSaGuXZqov7l-nFcCEEzbhWo5aOPhAkK2LcGjq3_ELje4k3xwOE316Iqjg6JibmTzAoTbO7AsNsxh_-Hj9XWEqyFx96FNr32RvGc5FAD4ni1ad'
+const SPOTIFY_API_BASE = "https://api.spotify.com/v1/"
 
 export const getToken = async () => {
 
@@ -17,17 +17,30 @@ export const getToken = async () => {
     return response.data.access_token
 }
 
-export const searchSongs = async (query: string, offset: number = 0, limit: number = 10) => {
-    const SPOTIFY_API = ''
-
-
+const bearerRequest = async (url: string, moreHeaders?: {}) => {
     const token = await getToken();
-    const url = `https://api.spotify.com/v1/search?q=${query}&type=track&limit=${limit}&offset=${offset * limit}`;
+
+    const reqURL = SPOTIFY_API_BASE + url
 
     const headers = {
         'Authorization': `Bearer ${token}`,
-    };
+    }
 
-    const songs = await axios.get(url, {headers})
-    return songs
+    const response = await axios.get(reqURL, {headers})
+    return response.data
+}
+
+export const searchSongs = async (query: string, offset: number = 0, limit: number = 10) => {
+
+    return bearerRequest(`search?q=${query}&type=track&limit=${limit}&offset=${offset * limit}`)
+}
+
+export const getSong = async (uri: string) => {
+    const response = await bearerRequest(`tracks/${uri}`)
+    return response
+}
+
+export const getFeatures = async (uri: string) => {
+    const response = await bearerRequest(`audio-features/${uri}`)
+    return response
 }

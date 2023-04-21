@@ -7,8 +7,9 @@ export default function SongResult(props: { song: SpotifyApi.TrackObjectFull }) 
     const image = props.song.album.images[2].url
 
     const truncate = (str: string) => {
-        return str.slice(0, 20) +
-            (str.length > 20 ? "..." : "")
+        const maxLength = 32
+        return str.slice(0, maxLength) +
+            (str.length > maxLength ? "..." : "")
     }
 
     const trunc_name = truncate(props.song.name)
@@ -21,25 +22,28 @@ export default function SongResult(props: { song: SpotifyApi.TrackObjectFull }) 
 
     const trunc_artists = truncate(artists)
 
-    const handleClick = () => {
-        console.log(props.song.uri)
-        navigate(`/details/${props.song.uri}`)
+    const clickSong = () => {
+        let uri = props.song.uri
+        uri = uri.slice(uri.lastIndexOf(':') + 1)
+        navigate(`/details/${uri}`)
     }
 
     return (
-        <div className={'song-result flex justify-around items-center py-4'}
-             onClick={() => {handleClick()}}>
-            <div className={'flex mr-auto items-center'}>
-                <img
-                    className={'w-16 h-16'}
-                    src={image}
-                    alt=""/>
-                <div className={'ml-4'}>
-                    <p className={'text-left text-sm text-white'}>{trunc_name}</p>
-                    <p className={'text-left text-sm text-gray-500'}>{trunc_artists}</p>
+        <div className={'hover:bg-spotify-gray px-3'}>
+            <div className={'song-result flex justify-around items-center' +
+                ' cursor-default py-4 px-10'}
+                 onClick={() => {clickSong()}}>
+                <div className={'flex mr-auto items-center'}>
+                    <img
+                        className={'w-12 h-12'}
+                        src={image}
+                        alt=""/>
+                    <div className={'ml-4'}>
+                        <p className={'text-left text-sm text-white'}>{trunc_name}</p>
+                        <p className={'text-left text-sm text-gray-500'}>{trunc_artists}</p>
+                    </div>
                 </div>
             </div>
         </div>
     )
-
 }

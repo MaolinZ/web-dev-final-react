@@ -8,6 +8,7 @@ import Login from "./components/pages/Login";
 import SignUp from "./components/pages/SignUp";
 import Rooms from "./components/pages/rooms";
 import SearchResults from "./components/pages/search-results";
+import Details from "./components/pages/search-results/details";
 
 function App() {
     return (
@@ -20,7 +21,8 @@ function App() {
                     <Route path={"/rooms"} element={<Rooms/>}/>
                     <Route path={"/search/"}
                            element={<SearchResults/>}/>
-                    {/*<Route path={'*'} element={<Navigate to={'/rooms'}/>}/>*/}
+                    <Route path={"/details/:uri"} element={<Details/>}/>
+                    <Route path={'*'} element={<Navigate to={'/rooms'}/>}/>
                 </Routes>
             </BrowserRouter>
         </div>

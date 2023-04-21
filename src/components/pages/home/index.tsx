@@ -12,7 +12,7 @@ export default function Home() {
         <div className="home-form">
             <img className={"w-96 mx-auto my-10"}
                  src={"https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png"}/>
-            <div className={"w-96 mx-auto bg-black rounded-md p-6"}>
+            <div className={"w-96 mx-auto bg-spotify-gray rounded-md p-6"}>
                 <input className={"home-user-input w-full rounded-sm mt-4" +
                     " mb-8" +
                     " py-2 pl-2 border-2"}

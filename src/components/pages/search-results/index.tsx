@@ -2,9 +2,7 @@ import React, {useEffect, useState} from "react";
 import Topbar from "../../topbar";
 import SongResult from "./song-result";
 import * as service from "../../../services/services"
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {searchSongs} from "../../../services/services";
-import {queries} from "@testing-library/react";
+import {useNavigate} from "react-router-dom";
 
 export default function SearchResults() {
     const searchParams = new URLSearchParams(window.location.search)
@@ -15,15 +13,14 @@ export default function SearchResults() {
     const query = searchParams.get("query")
     const offset = Number(searchParams.get("page"))
 
-    useEffect( () => {
+    useEffect(() => {
 
         async function fetchSongs() {
             setLoading(true)
             const results = await service.searchSongs(query!, offset)
-            setSongs(results.data)
+            setSongs(results)
             setLoading(false)
         }
-
         fetchSongs()
     }, [])
 
@@ -36,9 +33,11 @@ export default function SearchResults() {
     }
 
     const clickNext = () => {
-        searchParams.set('page', (offset + 1).toString())
-        navigate(`/search?${searchParams.toString()}`)
-        navigate(0)
+        if (songs.tracks!.items.length == 10) {
+            searchParams.set('page', (offset + 1).toString())
+            navigate(`/search?${searchParams.toString()}`)
+            navigate(0)
+        }
     }
 
     // TODO: Get from database
@@ -49,28 +48,30 @@ export default function SearchResults() {
     return (
         <div>
             <Topbar/>
-            <h1 className={'text-xl text-white'}>SEARCH</h1>
-            {loading ? <h1>Loading</h1> :
-                <div>
-                    <div className={'search-results m-auto w-4/12'}>
-                        {songs.tracks?.items.map((s) =>
-                            <SongResult song={s}/>)}
-                    </div>
-                    <div className={'page-buttons my-10 text-white'}>
-                        <button className={ offset==0 ? 'bg-spotify-green' +
-                            ' text-gray-700' : 'text-white' }
-                        onClick={() => {clickPrevious()}}>
-                            Previous
-                        </button>
-                        Page: {offset + 1}
-                        <button className={ offset==0 ? 'bg-spotify-green' +
-                            ' text-gray-700' : 'text-white' }
-                            onClick={() => {clickNext()}}>
-                            Next
-                        </button>
-                    </div>
-                </div>
-            }
+            {loading && <h1>Loading</h1>}
+            <div className={'search-results m-auto my-4 w-96' +
+                ' bg-spotify-dark'}>
+                {songs.tracks?.items.map((s) =>
+                    <SongResult song={s}/>)}
+            </div>
+            <div className={'page-buttons my-10 text-white'}>
+                <button className={offset == 0 ? 'bg-spotify-green' +
+                    ' text-gray-700' : 'text-white'}
+                        onClick={() => {
+                            clickPrevious()
+                        }}>
+                    Previous
+                </button>
+                Page: {offset + 1}
+                <button className={offset == 0 ? 'bg-spotify-green' +
+                    ' text-gray-700' : 'text-white'}
+                        onClick={() => {
+                            clickNext()
+                        }}>
+                    Next
+                </button>
+            </div>
+
 
         </div>
     )

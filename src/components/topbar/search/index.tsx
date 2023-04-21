@@ -1,11 +1,8 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {useParams} from "react-router";
-import {searchSongs} from "../../../services/services";
+import React from "react";
+import {useNavigate} from "react-router-dom";
 
 export default function SearchBar() {
 
-    // const [searchParams, setSearchParams] = useSearchParams()
     const searchParams = new URLSearchParams()
     const query = searchParams.get("query")
     const navigate = useNavigate()
@@ -20,7 +17,6 @@ export default function SearchBar() {
         }
     }
 
-
     return (
         <input
             id="search-field"
@@ -31,5 +27,4 @@ export default function SearchBar() {
                 handleEnter(e)
             }}/>
     )
-
 }
