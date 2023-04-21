@@ -8,7 +8,7 @@ export default function Topbar() {
         <div className={"topbar flex w-full items-center bg-spotify-green" +
             " py-3"}>
             <Link className={"inline-block mx-8"}
-                  to={"/"}>
+                  to={"/landing"}>
                 <img
                     className={"w-40"}
                     src="https://zeevector.com/wp-content/uploads/Spotify-Black-and-White-Logo.png"
@@ -19,7 +19,6 @@ export default function Topbar() {
                 <ul className={"page-tabs"}>
                     <NavTab label={"Home"} to={"/rooms"}/>
                     <NavTab label={"Profile"} to={"/profile"}/>
-                    <NavTab label={"Create Room"} to={"/create"}/>
                 </ul>
             </div>
         </div>
