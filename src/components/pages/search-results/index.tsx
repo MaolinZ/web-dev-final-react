@@ -36,7 +36,10 @@ export default function SearchResults() {
                 <>
                     <div className={'m-auto my-4 w-96' +
                         ' bg-spotify-dark'}>
-                        {type === '1' ? <UserList/> : <SongList/>}
+                        <div className={'search-results m-auto my-4 w-96' +
+                            ' bg-spotify-dark'}>
+                            {type === '1' ? <UserList/> : <SongList/>}
+                        </div>
                     </div>
                     <div className={'page-buttons my-10 text-white'}>
                         <button className={offset == 0 ? 'bg-spotify-green' +

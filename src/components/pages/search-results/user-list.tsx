@@ -2,10 +2,13 @@ import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import UserResult from "./user-result";
 import {UserProps} from "../../props/UserProps";
+import SongResult from "./song-result";
+import {getAllUsers, getProfileImageURL} from "../../services/user-services";
 
 export default function UserList() {
 
     const tempUser = {
+        uid: '1',
         username: "User",
         biography: "bio",
         followers: [],
@@ -17,30 +20,34 @@ export default function UserList() {
     const searchParams = new URLSearchParams(window.location.search)
     const [results, setResults] = useState<UserProps[]>([])
     const [loading, setLoading] = useState(true)
-    const navigate = useNavigate()
 
     const query = searchParams.get("query")
-    const offset = Number(searchParams.get("page"))
 
     useEffect(() => {
-
         async function findUsers() {
             setLoading(true)
-            // const results = await service.searchSongs(query!, offset)
-            const results = [tempUser, tempUser, tempUser, tempUser]
-            setResults(results)
+            const response: UserProps[] = await getAllUsers()
+            // const results = [tempUser, tempUser, tempUser, tempUser]
+            setResults(response.filter((user) => {
+                return user.username?.indexOf(query!) !== -1
+            }))
             setLoading(false)
         }
-
         findUsers()
-        console.log(results)
     }, [])
 
     return (
-        <div className={'text-white'}>
-            <div className={'hover:bg-spotify-gray px-4'}>
-                {results?.map((user) => <UserResult user={tempUser}/>)}
-            </div>
-        </div>
+        <>
+            {loading ? <h1 className={'text-white'}>Loading...</h1> :
+                <>
+                    {results?.map((user) =>
+                        <div className={'hover:bg-spotify-gray px-4'}>
+                            <div className={'result-item flex justify-around items-center' +
+                                ' cursor-default'}>
+                                <UserResult user={user}/>
+                            </div>
+                        </div>)}
+                </>}
+        </>
     )
 }

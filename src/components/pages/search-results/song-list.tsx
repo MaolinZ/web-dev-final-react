@@ -28,8 +28,7 @@ export default function SongList() {
     return(
         <>
             {loading ? <h1 className={'text-white'}>Loading...</h1> :
-                <div className={'search-results m-auto my-4 w-96' +
-                    ' bg-spotify-dark'}>
+                <>
                     {results.tracks?.items.map((s) =>
                         <div className={'hover:bg-spotify-gray px-4'}>
                             <div
@@ -38,7 +37,7 @@ export default function SongList() {
                                 <SongResult song={s}/>
                             </div>
                         </div>)}
-                </div>}
+                </>}
         </>
     )
 }

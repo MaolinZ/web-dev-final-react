@@ -1,23 +1,36 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import * as Common from "../../../Common"
 import {UserProps} from "../../props/UserProps";
+import {getProfileImageURL} from "../../services/user-services";
+import {useNavigate} from "react-router";
 
 export default function UserResult(props: {user: UserProps}) {
 
-    const { username, biography, avatar, songs, followers } = props.user
+    const { uid, username, biography, songs, followers } = props.user
+    const [image, setImage] = useState('')
+    const navigate = useNavigate()
 
     const trunc_name = Common.truncate(username!)
 
+    useEffect(() => {
+        const getImage = async () => {
+            const response = await getProfileImageURL(uid!)
+            setImage(response)
+        }
+        getImage()
+    }, [])
+
     const clickUser = () => {
-        return 1
+        navigate(`/profile/${uid}`)
     }
 
     return(
         <div className={'flex mr-auto items-center w-full p-4'}
              onClick={() => {clickUser()}}>
             <img
-                className={'w-12 h-12'}
-                src={avatar}
+                className={'w-12 h-12 rounded-full'}
+                src={ image == '' ? 'https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png' :
+                    image}
                 alt=""/>
             <div className={'ml-4'}>
                 <p className={'text-left text-sm text-white'}>{trunc_name}</p>

@@ -33,3 +33,8 @@ export const getProfileImageURL = async (uid: string) => {
     const url = getDownloadURL(storageRef);
     return url;
 }
+
+export const getAllUsers = async () => {
+    const response = await axios.get(USER_API);
+    return response.data;
+}
