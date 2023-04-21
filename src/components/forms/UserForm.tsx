@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
-import { createUser, login } from "../services/auth-services";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authState, createUser, login } from "../services/auth-services";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../config/firebase";
 
 export default function UserForm(props: { submitMethod: string }) {
     //const nav = useNavigate();
@@ -8,6 +10,8 @@ export default function UserForm(props: { submitMethod: string }) {
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [errorFlag, setErrorFlag] = useState<boolean>(false);
+
+    const [testElem, setTestElem] = useState<string>("");
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -20,16 +24,28 @@ export default function UserForm(props: { submitMethod: string }) {
         event.preventDefault();
         if (password !== "" && confirmPassword !== "" && password === confirmPassword) {
             createUser({ email, password })
-                .then((response) => {
-                    if (response === -1) {
-                        setErrorFlag(true);
-                    } else {
-                        console.log(response)
-                    }
+                .then(() => {
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    console.log(err.code);
+                    if (err.code === "auth/email-already-in-use") {
+                        setErrorFlag(true);
+                    }
+                    else {
+                        console.log(err)
+                    }
+                });
         }
     }
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user !== null) {
+                console.log(user.uid);
+                setTestElem(user.uid);
+            }
+        })
+    });
 
     return (
         <div>
@@ -66,6 +82,9 @@ export default function UserForm(props: { submitMethod: string }) {
                 </form>
                 <div className={errorFlag ? "" : "hidden"}>
                     <span>Email already in use!</span>
+                </div>
+                <div className="text-red-700">
+                    <h1>{testElem}</h1>
                 </div>
             </div>
         </div>
