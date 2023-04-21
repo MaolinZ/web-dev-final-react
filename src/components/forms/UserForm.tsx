@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../config/firebase";
 
 export default function UserForm(props: { submitMethod: string }) {
-    //const nav = useNavigate();
+    const nav = useNavigate();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -25,9 +25,9 @@ export default function UserForm(props: { submitMethod: string }) {
         if (password !== "" && confirmPassword !== "" && password === confirmPassword) {
             createUser({ email, password })
                 .then(() => {
+                    nav("/profile");
                 })
                 .catch(err => {
-                    console.log(err.code);
                     if (err.code === "auth/email-already-in-use") {
                         setErrorFlag(true);
                     }
@@ -41,11 +41,10 @@ export default function UserForm(props: { submitMethod: string }) {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user !== null) {
-                console.log(user.uid);
                 setTestElem(user.uid);
             }
         })
-    });
+    }, []);
 
     return (
         <div>
