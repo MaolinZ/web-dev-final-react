@@ -2,9 +2,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth } from "../config/firebase";
 import { useNavigate } from "react-router";
-import { getUserById, updateUser } from "../services/user-services";
+import { getProfileImageURL, getUserById, updateUser, uploadProfileImage } from "../services/user-services";
 import { UserProps } from "../props/UserProps";
-import { getProfileImageURL, uploadProfileImage } from "../services/auth-services";
 import Topbar from "../topbar";
 
 export default function Profile() {
@@ -19,7 +18,7 @@ export default function Profile() {
         event.preventDefault();
         if (auth.currentUser !== null && profileImg) {
             await updateUser(auth.currentUser.uid, { username, biography });
-            await uploadProfileImage(profileImg);
+            await uploadProfileImage(auth.currentUser.uid, profileImg);
         }
     }
 
@@ -30,7 +29,7 @@ export default function Profile() {
             } else {
                 const response = await getUserById(user.uid);
                 setCurrentUser(response);
-                const img = await getProfileImageURL();
+                const img = await getProfileImageURL(user.uid);
                 setCurrProfileImg(img);
             }
         });

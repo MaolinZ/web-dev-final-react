@@ -1,6 +1,8 @@
 import axios from "axios"
 import { API_BASE } from "./api_consts";
 import { UserProps, UserTemplate } from "../props/UserProps";
+import { storage } from "../config/firebase";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 const USER_API = `${API_BASE}/users`
 
@@ -19,4 +21,15 @@ export const updateUser = async(uid: string, user: UserProps) => {
 export const getUserById = async(uid: string) => {
     const response = await axios.get(USER_API + `/${uid}`);
     return response.data;
+}
+
+export const uploadProfileImage = async (uid: string, profileImg: File) => {
+    const storageRef = ref(storage, `/${uid}/profile`);
+    const uploadTask = await uploadBytesResumable(storageRef, profileImg);
+} 
+
+export const getProfileImageURL = async (uid: string) => {
+    const storageRef = ref(storage, `/${uid}/profile`);
+    const url = getDownloadURL(storageRef);
+    return url;
 }
