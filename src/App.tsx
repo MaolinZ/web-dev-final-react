@@ -23,8 +23,8 @@ function App() {
                     <Route path={"/search/"}
                            element={<SearchResults/>}/>
                     <Route path={"/details/:uri"} element={<Details/>}/>
+                    <Route path={"/profile/:uid"} element={<Profile/>} />
                     <Route path={'*'} element={<Navigate to={'/landing'}/>}/>
-                    <Route path={"/profile"} element={<Profile/>} />
                 </Routes>
             </BrowserRouter>
         </div>

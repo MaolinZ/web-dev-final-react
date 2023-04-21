@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import SongResult from "./song-result";
 import {useNavigate} from "react-router-dom";
-import * as service from "../../../services/services";
+import * as service from "../../services/spotify-services";
 
 export default function SongList() {
 
@@ -23,13 +23,12 @@ export default function SongList() {
         }
 
         fetchSongs()
-    }, [])
+    }, [offset])
 
     return(
         <>
             {loading ? <h1 className={'text-white'}>Loading...</h1> :
-                <div className={'search-results m-auto my-4 w-96' +
-                    ' bg-spotify-dark'}>
+                <>
                     {results.tracks?.items.map((s) =>
                         <div className={'hover:bg-spotify-gray px-4'}>
                             <div
@@ -38,7 +37,7 @@ export default function SongList() {
                                 <SongResult song={s}/>
                             </div>
                         </div>)}
-                </div>}
+                </>}
         </>
     )
 }

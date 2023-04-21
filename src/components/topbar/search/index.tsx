@@ -12,13 +12,14 @@ export default function SearchBar() {
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             const searchTerm = (document.getElementById("search-field") as HTMLInputElement).value
-            searchParams.set('query', searchTerm!)
-            searchParams.set('page', '0')
-
             const checked = (document.getElementById('search-switch') as HTMLInputElement).checked
-            searchParams.set('type', checked ? '1' : '0')
-            navigate(`/search?${searchParams.toString()}`)
-            navigate(0)
+            if (searchTerm !== '' || checked) {
+                searchParams.set('query', searchTerm!)
+                searchParams.set('page', '0')
+                searchParams.set('type', checked ? '1' : '0')
+                navigate(`/search?${searchParams.toString()}`)
+                navigate(0)
+            }
         }
     }
 
@@ -32,7 +33,8 @@ export default function SearchBar() {
                 onKeyDown={(e) => {
                     handleEnter(e)
                 }}/>
-            <label className={'text-white'} htmlFor="search-switch">User?</label>
+            <label className={'text-white'}
+                   htmlFor="search-switch">User?</label>
             <input
                 id='search-switch'
                 type="checkbox"

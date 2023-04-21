@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router";
-import * as service from "../../../../services/services"
+import * as service from "../../../services/spotify-services"
 import Topbar from "../../../topbar";
 import Stat from "./stat";
 import {unstable_batchedUpdates} from "react-dom";
