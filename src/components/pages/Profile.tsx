@@ -39,7 +39,7 @@ export default function Profile() {
     return (
         <div>
             <Topbar />
-            <div className="h-full">
+            <div className="h-full text-gray-500">
                 <form onSubmit={onSubmit}>
                     <div className="flex flex-col items-center justify-center">
                         <img src={currProfileImg} className="rounded-full object-contain"></img>

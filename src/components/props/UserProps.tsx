@@ -5,6 +5,7 @@ export interface UserProps {
     followers?: Array<DocumentReference>;
     songs?: Array<string>;
     biography?: string;
+    avatar?: string;
 }
 
 export const UserTemplate = {

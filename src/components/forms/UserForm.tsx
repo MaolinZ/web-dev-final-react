@@ -48,7 +48,7 @@ export default function UserForm(props: { submitMethod: string }) {
     }, []);
 
     return (
-        <div>
+        <div className={'text-gray-500'}>
             <div>
                 <span>{props.submitMethod === 'login' ? "Login now!" : "Sign up now!"}</span>
             </div>

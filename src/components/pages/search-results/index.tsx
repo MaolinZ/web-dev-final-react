@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Topbar from "../../topbar";
 import SongResult from "./song-result";
-import * as service from "../../../services/services"
+import * as service from "../../services/spotify-services"
 import {useNavigate} from "react-router-dom";
 import SongList from "./song-list";
 import UserList from "./user-list";
@@ -34,7 +34,7 @@ export default function SearchResults() {
         <div>
             <Topbar/>
                 <>
-                    <div className={'search-results m-auto my-4 w-96' +
+                    <div className={'m-auto my-4 w-96' +
                         ' bg-spotify-dark'}>
                         {type === '1' ? <UserList/> : <SongList/>}
                     </div>

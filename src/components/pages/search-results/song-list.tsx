@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import SongResult from "./song-result";
 import {useNavigate} from "react-router-dom";
-import * as service from "../../../services/services";
+import * as service from "../../services/spotify-services";
 
 export default function SongList() {
 
@@ -23,7 +23,7 @@ export default function SongList() {
         }
 
         fetchSongs()
-    }, [])
+    }, [offset])
 
     return(
         <>

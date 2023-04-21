@@ -1,18 +1,12 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import * as Common from '../../../Common'
 
 export default function SongResult(props: { song: SpotifyApi.TrackObjectFull }) {
 
     const navigate = useNavigate()
     const image = props.song.album.images[2].url
-
-    const truncate = (str: string) => {
-        const maxLength = 32
-        return str.slice(0, maxLength) +
-            (str.length > maxLength ? "..." : "")
-    }
-
-    const trunc_name = truncate(props.song.name)
+    const trunc_name = Common.truncate(props.song.name)
 
     let artists = props.song.artists[0].name
 
@@ -20,7 +14,7 @@ export default function SongResult(props: { song: SpotifyApi.TrackObjectFull }) 
         artists = artists + ", " + props.song.artists[i].name
     }
 
-    const trunc_artists = truncate(artists)
+    const trunc_artists = Common.truncate(artists)
 
     const clickSong = () => {
         let uri = props.song.uri
