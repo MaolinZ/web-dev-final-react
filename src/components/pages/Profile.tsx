@@ -12,6 +12,7 @@ import {UserProps} from "../props/UserProps";
 import Topbar from "../topbar";
 import {BiEdit} from 'react-icons/bi'
 import {IconContext} from "react-icons";
+import { changeUserEmail, changeUserPassword } from "../services/auth-services";
 
 
 // TODO Add check for invalid uid route parameter
@@ -21,6 +22,10 @@ export default function Profile() {
     const [currentUser, setCurrentUser] = useState<UserProps>({});
     const [profileImg, setProfileImg] = useState<File>();
     const [currProfileImg, setCurrProfileImg] = useState<string>('https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png');
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [errorFlag, setErrorFlag] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     const {uid} = useParams()
     const navigate = useNavigate()
@@ -34,9 +39,27 @@ export default function Profile() {
         if (auth.currentUser !== null && isUser()) {
             const username = (document.getElementById('user-form') as HTMLInputElement).value
             const biography = (document.getElementById('bio-form') as HTMLInputElement).value
-            await updateUser(auth.currentUser.uid, {username, biography});
+            try {
+                await updateUser(auth.currentUser.uid, {username, biography});
+            } catch {
+                setErrorFlag(true);
+                setErrorMessage("Username already exists!")
+                return;
+            }
             if (profileImg) {
                 await uploadProfileImage(auth.currentUser.uid, profileImg)
+            }
+            try {
+                if (email && email !== "") {
+                    await changeUserEmail(email);
+                }
+                if (password && password !== "") {
+                    await changeUserPassword(password);
+                }
+            } catch {
+                setErrorFlag(true);
+                setErrorMessage("This is sensitive info you are changing. Please log out and log in again to change.");
+                return;
             }
             navigate(0)
         }
@@ -113,10 +136,26 @@ export default function Profile() {
                                             }
                                         }}/>
                                     </div>
+                                    <div className="text-left mb-3">
+                                        <label className="text-white">Change Email: </label>
+                                        <input className="p-1" required={false} onChange={(e) => {
+                                            setEmail(e.target.value);
+                                        }}/>
+                                    </div>
+                                    <div className="text-left">
+                                        <label className="text-white">Change Password: </label>
+                                        <input className="p-1" required={false} type="password" onChange={(e) => {
+                                            setPassword(e.target.value);
+                                        }}/>
+                                    </div>
                                     {editing &&
+                                        <>
+                                        <div className={!errorFlag ? "hidden" : ""}>
+                                            <p className="text-red-500">{errorMessage}</p>
+                                        </div>
                                         <button
                                             className={`text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg`}
-                                            type="submit">Submit</button>}
+                                            type="submit">Submit</button> </>}
                                 </>}
                             </div>
                         </div>
