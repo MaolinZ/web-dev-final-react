@@ -7,7 +7,8 @@ export default function NavTab(props: {label?: string, to?: string, children?: a
 
     return (
         <NavLink className={"transition ease-in-out delay-150 p-5 px-2" +
-            " text-white border-transparent text-medium border-b-4" +
+            " lg:px-4 text-medium lg:text-xl text-white border-transparent" +
+            " border-b-4" +
             " inline-block "}
                  to={to ? to : ''}
                  style={({ isActive, isPending }) => {

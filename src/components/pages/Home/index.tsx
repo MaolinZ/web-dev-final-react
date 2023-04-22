@@ -24,7 +24,7 @@ export default function Home() {
         <div>
             <Topbar></Topbar>
             {!loading && auth.currentUser !== null &&
-                <h1 className={'text-white font-extrabold text-3xl'}>
+                <h1 className={'text-white text-4xl text-3xl'}>
                     {`Welcome ` + user.username}</h1>}
         </div>
     )

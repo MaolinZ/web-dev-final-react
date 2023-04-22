@@ -24,18 +24,19 @@ export default function SearchBar() {
     }
 
     return (
-        <div className={'inline-flex items-center h-8'}>
+        <div className={'inline-flex items-center h-9'}>
             <input
                 id="search-field"
                 type="text"
                 defaultValue={query!}
-                className={"rounded-l-full px-4 w-56 h-full"}
+                placeholder={'Search'}
+                className={"rounded-l-full pl-5 w-52 h-full"}
                 onKeyDown={(e) => {
                     handleEnter(e)
                 }}/>
             <label
                 className={`inline-flex switch-box rounded-r-full bg-black w-50 text-xs pl-2 pr-4 h-full
-                items-center hover:cursor-pointer hover:bg-green-700 w-16 m-auto text-white `}
+                items-center hover:cursor-pointer hover:bg-green-700 w-16 m-auto text-white select-none`}
                 htmlFor={'search-switch'}>
                 {userToggle ? 'USERS' : 'SONGS'}
             </label>

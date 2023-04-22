@@ -29,11 +29,14 @@ export default function SongList() {
         <>
             {loading ? <h1 className={'text-white'}>Loading...</h1> :
                 <>
-                    {results.tracks?.items.map((s) =>
+                    {results.tracks?.items.map((s, i) =>
                         <div className={'hover:bg-spotify-gray px-4'}>
                             <div
                                 className={'result-item flex justify-around items-center' +
                                     ' cursor-default'}>
+                                <h1 className={'text-white font-bold px-8'}>
+                                    {i + 1}
+                                </h1>
                                 <SongResult song={s}/>
                             </div>
                         </div>)}

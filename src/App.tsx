@@ -11,9 +11,24 @@ import SearchResults from "./components/pages/search-results";
 import Details from "./components/pages/search-results/details";
 import Profile from './components/pages/Profile';
 
+const sizer = () => {
+
+    return (
+        <div className={'flex justify-around items-center'}>
+            <h1 className={'text-white'}>XS</h1>
+            <h1 className={'text-white hidden sm:block'}>SM</h1>
+            <h1 className={'text-white hidden md:block'}>MD</h1>
+            <h1 className={'text-white hidden lg:block'}>LG</h1>
+            <h1 className={'text-white hidden xl:block'}>XL</h1>
+            <h1 className={'text-white hidden 2xl:block'}>2XL</h1>
+        </div>
+    )
+}
+
 function App() {
     return (
         <div className="App">
+            {sizer()}
             <BrowserRouter>
                 <Routes>
                     <Route index element={<Home/>}/>

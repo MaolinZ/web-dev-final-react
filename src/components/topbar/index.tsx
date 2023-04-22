@@ -17,33 +17,38 @@ export default function Topbar() {
     }, []);
 
     return (
-        <div className={"topbar flex w-full items-center bg-spotify-green"}>
-            <Link className={"inline-block hidden sm:block sm:mx-8"}
-                  to={"/"}>
-                <img
-                    className={"w-40 flex-none"}
-                    src="https://zeevector.com/wp-content/uploads/Spotify-Black-and-White-Logo.png"
-                    alt=""/>
-            </Link>
-            <div className={'search-wrapper hidden md:block'}>
+        <div className={'topbar w-full bg-spotify-green'}>
+            <div className={'search-wrapper sm:hidden pt-4'}>
                 <SearchBar/>
             </div>
-            <div className={"mx-auto sm:ml-auto sm:mr-4"}>
-                <ul className={"page-tabs"}>
-                    <NavTab label={"Home"} to={"/"}/>
-                    { loggedIn ?
-                        <>
-                            <NavTab label={"Profile"} to={`/profile/${auth.currentUser?.uid}`}/>
-                            <span onClick={(event) => {
-                                logout()
-                            }
-                            }>
+            <div className={"flex items-center justify-around"}>
+                <Link className={"inline-block hidden md:block md:ml-10"}
+                      to={"/"}>
+                    <img
+                        className={"w-40 flex-none"}
+                        src="https://zeevector.com/wp-content/uploads/Spotify-Black-and-White-Logo.png"
+                        alt=""/>
+                </Link>
+                <div className={'search-wrapper hidden sm:block ml-10'}>
+                    <SearchBar/>
+                </div>
+                <div className={"mx-auto sm:ml-auto sm:mr-4"}>
+                    <ul className={"page-tabs"}>
+                        <NavTab label={"Home"} to={"/"}/>
+                        { loggedIn ?
+                            <>
+                                <NavTab label={"Profile"} to={`/profile/${auth.currentUser?.uid}`}/>
+                                <span onClick={(event) => {
+                                    logout()
+                                }
+                                }>
                                 <NavTab label={'Logout'} to={''}/>
                             </span>
-                        </> :
-                        <NavTab label={'Login'} to={'/auth'}/>}
+                            </> :
+                            <NavTab label={'Login'} to={'/auth'}/>}
 
-                </ul>
+                    </ul>
+                </div>
             </div>
         </div>
     )

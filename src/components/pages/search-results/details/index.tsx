@@ -57,8 +57,6 @@ export default function Details() {
         PitchMap.set(10, 'A♯/B♭')
         PitchMap.set(11, 'B')
 
-
-        console.log(PitchMap.get(pitchClass))
         return PitchMap.get(pitchClass) + " " + (mode ? 'Major' : 'Minor')
     }
 
@@ -75,11 +73,11 @@ export default function Details() {
                                 alt=""/>
                             <h1 className={'text-white'}>{song?.name}</h1>
                             <h1 className={'text-gray-500'}>{song?.artists.at(0)!.name}</h1>
-                            { song?.preview_url == null ? '' :  <audio className={'audio-preview m-auto my-6'} controls>
+                            { song?.preview_url == null ? '' :  <audio className={'audio-preview m-auto mt-6'} controls>
                                 <source src={song?.preview_url} type="audio/mp3"/>
                             </audio>}
-                            <div className={'mx-8 flex items-center' +
-                                ' justify-around'}>
+                            <div className={'w-fit mx-auto md:flex' +
+                                ' md:items-center'}>
                                 <Stat title={'Key'}
                                       value={toKey(features?.key as number, features?.mode as number)}/>
                                 <Stat title={'BPM'}

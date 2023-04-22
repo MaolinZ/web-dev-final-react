@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import UserResult from "./user-result";
 import {UserProps} from "../../props/UserProps";
-import SongResult from "./song-result";
 import {getAllUsers, getProfileImageURL} from "../../services/user-services";
 
 export default function UserList() {
@@ -40,11 +38,14 @@ export default function UserList() {
         <>
             {loading ? <h1 className={'text-white'}>Loading...</h1> :
                 <>
-                    {results?.map((user) =>
+                    {results?.map((user, i) =>
                         <div className={'hover:bg-spotify-gray px-4'}>
                             <div className={'result-item flex justify-around items-center' +
                                 ' cursor-default'}>
-                                <UserResult user={user}/>
+                                <h1 className={'text-white font-bold px-8'}>
+                                    {i + 1}
+                                </h1>
+                                <UserResult user={user} key={i}/>
                             </div>
                         </div>)}
                 </>}
