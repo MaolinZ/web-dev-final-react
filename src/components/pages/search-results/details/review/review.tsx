@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { ReviewProps } from "../../../../props/ReviewProps";
-import { UserProps } from "../../../../props/UserProps";
-import { getUserById } from "../../../../services/user-services";
-import { Link } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {ReviewProps} from "../../../../props/ReviewProps";
+import {getUserById} from "../../../../services/user-services";
+import {Link} from "react-router-dom";
 
 export default function Review(props: { review: ReviewProps }) {
 
