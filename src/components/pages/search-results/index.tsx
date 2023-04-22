@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
 import Topbar from "../../topbar";
-import SongResult from "./song-result";
-import * as service from "../../services/spotify-services"
 import {useNavigate} from "react-router-dom";
 import SongList from "./song-list";
 import UserList from "./user-list";
@@ -10,7 +8,6 @@ export default function SearchResults() {
     const searchParams = new URLSearchParams(window.location.search)
     const navigate = useNavigate()
 
-    const query = searchParams.get("query")
     const offset = Number(searchParams.get("page"))
     const type = searchParams.get("type")
 
@@ -34,9 +31,10 @@ export default function SearchResults() {
         <div>
             <Topbar/>
                 <>
-                    <div className={'m-auto my-4 w-96' +
+                    <div className={'m-auto my-4 w-100 sm:w-10/12' +
+                        ' md:w-7/12 lg:w-5/12' +
                         ' bg-spotify-dark'}>
-                        <div className={'search-results m-auto my-4 w-96' +
+                        <div className={'search-results m-auto my-4' +
                             ' bg-spotify-dark'}>
                             {type === '1' ? <UserList/> : <SongList/>}
                         </div>
@@ -47,7 +45,7 @@ export default function SearchResults() {
                                 onClick={() => {
                                     clickPrevious()
                                 }}>
-                            Previous
+
                         </button>
                         Page: {offset + 1}
                         <button className={offset == 0 ? 'bg-spotify-green' +

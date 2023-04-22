@@ -4,13 +4,13 @@ import {UserProps} from "../../props/UserProps";
 import {getProfileImageURL} from "../../services/user-services";
 import {useNavigate} from "react-router";
 
-export default function UserResult(props: {user: UserProps}) {
+export default function UserResult(props: { user: UserProps }) {
 
-    const { uid, username, biography, songs, followers } = props.user
+    const {uid, username, biography, songs, followers} = props.user
     const [image, setImage] = useState('')
     const navigate = useNavigate()
 
-    const trunc_name = Common.truncate(username!)
+    const trunc_name = Common.truncate(username!, 18)
 
     useEffect(() => {
         const getImage = async () => {
@@ -24,12 +24,14 @@ export default function UserResult(props: {user: UserProps}) {
         navigate(`/profile/${uid}`)
     }
 
-    return(
+    return (
         <div className={'flex mr-auto items-center w-full p-4'}
-             onClick={() => {clickUser()}}>
+             onClick={() => {
+                 clickUser()
+             }}>
             <img
                 className={'w-12 h-12 rounded-full'}
-                src={ image == '' ? 'https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png' :
+                src={image == '' ? 'https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png' :
                     image}
                 alt=""/>
             <div className={'ml-4'}>

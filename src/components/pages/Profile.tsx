@@ -16,12 +16,11 @@ import Topbar from "../topbar";
 export default function Profile() {
     const nav = useNavigate();
     const [currentUser, setCurrentUser] = useState<UserProps>({});
-    const [username, setUsername] = useState<string>("");
-    const [biography, setBiography] = useState<string>("");
     const [profileImg, setProfileImg] = useState<File>();
     const [currProfileImg, setCurrProfileImg] = useState<string>();
 
     const {uid} = useParams()
+    const navigate = useNavigate()
 
     const isUser = () => {
         return uid == auth.currentUser?.uid
@@ -30,11 +29,13 @@ export default function Profile() {
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (auth.currentUser !== null && isUser()) {
+            const username = (document.getElementById('user-form') as HTMLInputElement).value
+            const biography = (document.getElementById('bio-form') as HTMLInputElement).value
             await updateUser(auth.currentUser.uid, {username, biography});
             if (profileImg) {
                 await uploadProfileImage(auth.currentUser.uid, profileImg)
             }
-            ;
+            navigate(0)
         }
     }
 
@@ -50,17 +51,17 @@ export default function Profile() {
     return (
         <div>
             <Topbar/>
-            <div className="h-full text-gray-500">
+            <div className="h-full text-gray-500 bg-spotify-gray m-auto w-8/12">
                 <form onSubmit={onSubmit}>
                     <div className="flex flex-col items-center justify-center">
                         <img src={currProfileImg}
                              className="rounded-full object-contain w-56 h-56"></img>
                         <label>Username</label>
-                        <input onChange={(e) => setUsername(e.target.value)}
+                        <input id={"user-form"}
                                defaultValue={currentUser?.username}
                                readOnly={!isUser()}/>
                         <label>Biography</label>
-                        <textarea onChange={(e) => setBiography(e.target.value)}
+                        <textarea id={'bio-form'}
                                   defaultValue={currentUser?.biography}
                                   readOnly={!isUser()}/>
                         {isUser() && <>
