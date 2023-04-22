@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateEmail, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateEmail, updatePassword, updateProfile } from "firebase/auth";
 import { auth, storage } from "../config/firebase";
 import { addUser } from "./user-services";
 
@@ -21,6 +21,13 @@ export const logout = async () => {
 export const changeUserEmail = async (email: string) => {
     if (auth.currentUser) {
         const userCredential = await updateEmail(auth.currentUser, email);
+        return userCredential;
+    }
+}
+
+export const changeUserPassword = async (password: string) => {
+    if (auth.currentUser) {
+        const userCredential = await updatePassword(auth.currentUser, password);
         return userCredential;
     }
 }
