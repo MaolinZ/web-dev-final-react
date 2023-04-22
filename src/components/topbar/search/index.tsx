@@ -46,7 +46,6 @@ export default function SearchBar() {
                 type="checkbox"
                 defaultChecked={userToggle}
                 onClick={() => {
-                    console.log(userToggle)
                     setUserToggle(!userToggle)
                 }}/>
         </div>

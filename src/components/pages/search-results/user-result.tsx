@@ -30,7 +30,7 @@ export default function UserResult(props: { user: UserProps }) {
                  clickUser()
              }}>
             <img
-                className={'w-12 h-12 rounded-full'}
+                className={'w-12 h-12 rounded-full bg-white'}
                 src={image == '' ? 'https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png' :
                     image}
                 alt=""/>

@@ -10,25 +10,17 @@ import {
 } from "../services/user-services";
 import {UserProps} from "../props/UserProps";
 import Topbar from "../topbar";
-<<<<<<< Updated upstream
-=======
 import {BiEdit} from 'react-icons/bi'
 import {IconContext} from "react-icons";
-import { changeUserEmail } from "../services/auth-services";
->>>>>>> Stashed changes
 
 
 // TODO Add check for invalid uid route parameter
 export default function Profile() {
     const nav = useNavigate();
+    const [editing, setEditing] = useState(false)
     const [currentUser, setCurrentUser] = useState<UserProps>({});
     const [profileImg, setProfileImg] = useState<File>();
-<<<<<<< Updated upstream
-    const [currProfileImg, setCurrProfileImg] = useState<string>();
-=======
     const [currProfileImg, setCurrProfileImg] = useState<string>('https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png');
-    const [email, setEmail] = useState<string>("");
->>>>>>> Stashed changes
 
     const {uid} = useParams()
     const navigate = useNavigate()
@@ -46,9 +38,6 @@ export default function Profile() {
             if (profileImg) {
                 await uploadProfileImage(auth.currentUser.uid, profileImg)
             }
-            if (email && email !== "") {
-                await changeUserEmail(email);
-            }
             navigate(0)
         }
     }
@@ -65,30 +54,9 @@ export default function Profile() {
     return (
         <div>
             <Topbar/>
-            <div className="h-full text-gray-500 bg-spotify-gray m-auto w-8/12">
+            <div
+                className="h-full text-gray-500 bg-spotify-gray m-auto pt-10 pb-20 w-12/12 lg:w-9/12 2xl:w-8/12">
                 <form onSubmit={onSubmit}>
-<<<<<<< Updated upstream
-                    <div className="flex flex-col items-center justify-center">
-                        <img src={currProfileImg}
-                             className="rounded-full object-contain w-56 h-56"></img>
-                        <label>Username</label>
-                        <input id={"user-form"}
-                               defaultValue={currentUser?.username}
-                               readOnly={!isUser()}/>
-                        <label>Biography</label>
-                        <textarea id={'bio-form'}
-                                  defaultValue={currentUser?.biography}
-                                  readOnly={!isUser()}/>
-                        {isUser() && <>
-                            <label>Upload Profile Pic!</label>
-                            <input type="file" onChange={(e) => {
-                                if (e.target.files) {
-                                    setProfileImg(e.target.files[0]);
-                                }
-                            }}/>
-                            <button type="submit">Submit</button>
-                        </>}
-=======
                     <div className={'md:mx-20'}>
                         <div className={'md:flex items-center'}>
                             <img src={currProfileImg}
@@ -144,10 +112,6 @@ export default function Profile() {
                                                 setProfileImg(e.target.files[0]);
                                             }
                                         }}/>
-                                        <label className="text-white">Change Email</label>
-                                        <input onChange={(e) => {
-                                            setEmail(e.target.value);
-                                        }}/>
                                     </div>
                                     {editing &&
                                         <button
@@ -156,7 +120,6 @@ export default function Profile() {
                                 </>}
                             </div>
                         </div>
->>>>>>> Stashed changes
                     </div>
                 </form>
             </div>
