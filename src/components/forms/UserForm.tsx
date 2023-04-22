@@ -15,7 +15,7 @@ export default function UserForm(props: { submitMethod: string }) {
         event.preventDefault();
         login({ email, password })
             .then(() => {
-                nav("/landing");
+                nav("/");
             })
             .catch(err => console.log(err));
     }
@@ -42,7 +42,7 @@ export default function UserForm(props: { submitMethod: string }) {
     useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
             if (user !== null) {
-                
+
             }
         })
     }, []);
