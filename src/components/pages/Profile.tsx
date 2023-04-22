@@ -64,7 +64,7 @@ export default function Profile() {
                             <div className={'flex flex-col'}>
                                 <h1 className={`text-gray-500 w-fit m-auto md:m-0`}>
                                     <label
-                                        className={`hover:cursor-pointer`}
+                                        className={`${isUser() ? 'hover:cursor-pointer' : ''}`}
                                         htmlFor={'edit-toggle'}>Profile</label>
                                     {isUser() && <button
                                         id={'edit-toggle'}
