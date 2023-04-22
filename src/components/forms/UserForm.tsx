@@ -10,6 +10,7 @@ export default function UserForm(props: { submitMethod: string }) {
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [errorFlag, setErrorFlag] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -17,7 +18,11 @@ export default function UserForm(props: { submitMethod: string }) {
             .then(() => {
                 nav("/");
             })
-            .catch(err => console.log(err));
+            .catch((err) => {
+                console.log(err);
+                setErrorFlag(true);
+                setErrorMessage("Incorrect Credentials!")
+            });
     }
 
     const handleCreateUser = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -30,12 +35,18 @@ export default function UserForm(props: { submitMethod: string }) {
                 .catch(err => {
                     setErrorFlag(true);
                     if (err.code === "auth/email-already-in-use") {
-                        setErrorFlag(true);
+                        setErrorMessage("Email already in use!")
+                    }
+                    else if (err.code === "auth/weak-password") {
+                        setErrorMessage("Password needs to be at least 6 characters!")
                     }
                     else {
                         console.log(err)
                     }
                 });
+        } else {
+            setErrorFlag(true);
+            setErrorMessage("Password and Confirm Password do not match!");
         }
     }
 
@@ -81,7 +92,7 @@ export default function UserForm(props: { submitMethod: string }) {
                     </div>
                 </form>
                 <div className={errorFlag ? "text-red-500" : "hidden"}>
-                    <span>Email already in use!</span>
+                    <span>{errorMessage}</span>
                 </div>
             </div>
         </div>

@@ -14,8 +14,16 @@ export const addUser = async(uid: string) => {
 }
 
 export const updateUser = async(uid: string, user: UserProps) => {
-    const response = await axios.post(USER_API + "/update", {uid: uid, user: user});
-    return response.data;
+    const allUsers = await getAllUsers();
+    const allUsernames = allUsers.map((u) => {
+        return u.username;
+    });
+    if (!allUsernames.includes(user.username)) { 
+        const response = await axios.post(USER_API + "/update", {uid: uid, user: user});
+        return response.data;
+    } else {
+        throw new Error("Username already exists!");
+    }
 }
 
 export const getUserById = async(uid: string) => {
@@ -34,7 +42,7 @@ export const getProfileImageURL = async (uid: string) => {
     return url;
 }
 
-export const getAllUsers = async () => {
+export const getAllUsers = async () : Promise<UserProps[]> => {
     const response = await axios.get(USER_API);
     return response.data;
 }
