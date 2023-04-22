@@ -6,7 +6,7 @@ import {getUserById} from "../../services/user-services";
 import {onAuthStateChanged} from "firebase/auth";
 import {useNavigate} from "react-router";
 
-export default function Landing() {
+export default function Home() {
     const nav = useNavigate();
     const [user, setUser] = useState<any>('')
     const [loading, setLoading] = useState(true)

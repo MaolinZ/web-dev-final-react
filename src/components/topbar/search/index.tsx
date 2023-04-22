@@ -24,21 +24,29 @@ export default function SearchBar() {
     }
 
     return (
-        <div>
+        <div className={'inline-flex items-center h-8'}>
             <input
                 id="search-field"
                 type="text"
                 defaultValue={query!}
-                className={"rounded-full py-1 px-4"}
+                className={"rounded-l-full px-4 w-56 h-full"}
                 onKeyDown={(e) => {
                     handleEnter(e)
                 }}/>
-            <label className={'text-white'}
-                   htmlFor="search-switch">User?</label>
+            <label
+                className={`inline-flex switch-box rounded-r-full bg-black w-50 text-xs pl-2 pr-4 h-full
+                items-center hover:cursor-pointer hover:bg-green-700 w-16 m-auto text-white `}
+                htmlFor={'search-switch'}>
+                {userToggle ? 'USERS' : 'SONGS'}
+            </label>
             <input
+                className={'hidden'}
                 id='search-switch'
                 type="checkbox"
-                defaultChecked={type === '1'}/>
+                defaultChecked={userToggle}
+                onClick={() => {
+                    setUserToggle(!userToggle)
+                }}/>
         </div>
     )
 }
