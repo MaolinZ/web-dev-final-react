@@ -23,3 +23,8 @@ export const getReviewById = async (id: string) => {
     const response = await axios.get(`${REVIEW_API}/${id}`);
     return response.data;
 }
+
+export const getReviewsBySong = async (uri: string) => {
+    const response = await axios.get(`${REVIEW_API}/all/${uri}`)
+    return response.data
+}
