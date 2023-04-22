@@ -5,7 +5,7 @@ import { ReviewProps } from "../props/ReviewProps";
 const REVIEW_API = `${API_BASE}/reviews`
 
 export const addReview = async (review: ReviewProps) => {
-    const response = await axios.post(`${REVIEW_API}/add`, review);
+    const response = await axios.post(`${REVIEW_API}/add`, {review});
     return response.data;
 }
 
