@@ -55,7 +55,7 @@ export default function Profile() {
         <div>
             <Topbar/>
             <div
-                className="h-full text-gray-500 bg-spotify-gray m-auto pt-10 pb-20 w-12/12 lg:w-9/12">
+                className="h-full text-gray-500 bg-spotify-gray m-auto pt-10 pb-20 w-12/12 lg:w-9/12 2xl:w-8/12">
                 <form onSubmit={onSubmit}>
                     <div className={'md:mx-20'}>
                         <div className={'md:flex items-center'}>
