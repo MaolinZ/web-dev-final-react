@@ -15,7 +15,7 @@ export default function UserForm(props: { submitMethod: string }) {
         event.preventDefault();
         login({ email, password })
             .then(() => {
-                
+                nav("/landing");
             })
             .catch(err => console.log(err));
     }
@@ -48,7 +48,7 @@ export default function UserForm(props: { submitMethod: string }) {
     }, []);
 
     return (
-        <div>
+        <div className={'text-gray-500'}>
             <div>
                 <span>{props.submitMethod === 'login' ? "Login now!" : "Sign up now!"}</span>
             </div>
