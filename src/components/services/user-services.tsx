@@ -1,8 +1,9 @@
 import axios from "axios"
 import { API_BASE } from "./api_consts";
 import { UserProps, UserTemplate } from "../props/UserProps";
-import { storage } from "../config/firebase";
+import { auth, storage } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { getAdminById, updateAdmin } from "./admin-services";
 
 const USER_API = `${API_BASE}/users`
 
@@ -15,7 +16,10 @@ export const addUser = async(uid: string) => {
 
 export const updateUser = async(uid: string, user: UserProps) => {
     const allUsers = await getAllUsers();
-    const allUsernames = allUsers.map((u) => {
+    const filterUsers = allUsers.filter((u) => {
+        return u.uid !== uid;
+    })
+    const allUsernames = filterUsers.map((u) => {
         return u.username;
     });
     if (!allUsernames.includes(user.username)) { 
@@ -49,11 +53,22 @@ export const getAllUsers = async () : Promise<UserProps[]> => {
 }
 
 export const banUser = async(uid: string) => {
+    const retrieveAdmin = await getAdminById(auth.currentUser?.uid!);
+    console.log(retrieveAdmin);
+    const banList = retrieveAdmin.bans;
+    banList.push(uid);
     const response = await axios.post(USER_API + "/update", {uid: uid, user: {isBanned: true}})
+    await updateAdmin(auth.currentUser?.uid!, {bans: banList})
     return response.data;
 }
 
 export const unbanUser = async(uid: string) => {
+    const retrieveAdmin = await getAdminById(auth.currentUser?.uid!);
+    const banList = retrieveAdmin.bans;
+    const newBanList = banList.filter((ban: string) => {
+        return ban !== uid;
+    });
     const response = await axios.post(USER_API + "/update", {uid: uid, user: {isBanned: false}})
+    await updateAdmin(auth.currentUser?.uid!, {bans: newBanList})
     return response.data;
 }
