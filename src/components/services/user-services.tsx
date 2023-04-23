@@ -41,7 +41,6 @@ export const uploadProfileImage = async (uid: string, profileImg: File) => {
 } 
 
 export const getProfileImageURL = async (uid: string) => {
-    return 'https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png'
     const storageRef = ref(storage, `/${uid}/profile`);
     const url = getDownloadURL(storageRef);
     return url;

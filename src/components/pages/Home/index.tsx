@@ -10,7 +10,7 @@ import ReviewList from "../search-results/details/review/review-list";
 
 export default function Home() {
     const nav = useNavigate();
-    const [user, setUser] = useState<any>('')
+    const [user, setUser] = useState<any>(undefined)
     const [loading, setLoading] = useState(true)
     const [reviews, setReviews] = useState<ReviewProps[]>([])
 
@@ -20,8 +20,9 @@ export default function Home() {
             setLoading(true)
             const response: ReviewProps[] = await getAllReviews()
 
-            // TODO Filter by most recent
-            setReviews(response.slice(0, 10))
+            setReviews(response.sort((r1, r2) => {
+                return r2.timestamp! - r1.timestamp!
+            }))
             setLoading(false)
         }
 
@@ -41,11 +42,24 @@ export default function Home() {
             <div className={'md:mx-8 lg:w-8/12 lg:m-auto'}>
                 {auth.currentUser !== null &&
                     <h1 className={`text-white lg:text-5xl text-3xl font-bold mt-4 w-fit text-left`}>
-                        {`Welcome ` + user.username + '!'}</h1>}
-                <h1 className={`text-3xl text-white w-fit mr-auto my-4 md:ml-0 ml-4`}>Recent Reviews</h1>
+                        {`Welcome ${user == undefined ? '' : user.username}!`}</h1>}
+                <h1 className={`text-3xl text-white w-fit mr-auto my-4 md:ml-0 ml-4`}>Recent
+                    Reviews</h1>
                 <div className={'m-auto'}>
                     {!loading &&
-                        <ReviewList reviews={reviews}/>}
+                        <div>
+                            <ReviewList reviews={reviews.slice(0, 10)}/>
+                            ${auth.currentUser === null ? '' :
+                            <div>
+                                <h1 className={`text-3xl text-white w-fit mr-auto my-4 md:ml-0 ml-4 my-8`}>Your
+                                    Reviews</h1>
+                                <ReviewList reviews={reviews.filter(r => {
+                                    return r.uid === auth.currentUser?.uid
+                                })}/>
+                            </div>
+                        }
+
+                        </div>}
                 </div>
             </div>
         </div>
