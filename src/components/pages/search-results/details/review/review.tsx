@@ -35,7 +35,7 @@ export default function Review(props: { review: ReviewProps, isAdmin?: boolean }
     }
 
     const canDelete = () => {
-        if (auth.currentUser git!== null) {
+        if (auth.currentUser !== null) {
             return isAdmin || auth.currentUser.uid == review.uid
         }
         return false
