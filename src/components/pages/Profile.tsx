@@ -1,5 +1,5 @@
 import {onAuthStateChanged} from "firebase/auth";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {auth} from "../config/firebase";
 import {useNavigate, useParams} from "react-router";
 import {
@@ -14,8 +14,10 @@ import {UserProps} from "../props/UserProps";
 import Topbar from "../topbar";
 import {BiEdit} from 'react-icons/bi'
 import {IconContext} from "react-icons";
-import { changeUserEmail, changeUserPassword } from "../services/auth-services";
-import { updateReviewByUid } from "../services/review-services";
+import {changeUserEmail, changeUserPassword} from "../services/auth-services";
+import {getReviewByUid, updateReviewByUid} from "../services/review-services";
+import {ReviewProps} from "../props/ReviewProps";
+import ReviewList from "./search-results/details/review/review-list";
 
 
 // TODO Add check for invalid uid route parameter
@@ -29,6 +31,9 @@ export default function Profile() {
     const [errorFlag, setErrorFlag] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+    const [reviews, setReviews] = useState<ReviewProps[]>([])
+    const [loading, setLoading] = useState(true)
 
     const {uid} = useParams()
     const navigate = useNavigate()
@@ -90,6 +95,23 @@ export default function Profile() {
         });
     }, []);
 
+    useEffect(() => {
+        const fetchReviews = async () => {
+            const response = await getReviewByUid(uid!)
+            await setReviews(response)
+            setLoading(false)
+        }
+        setLoading(true)
+        fetchReviews()
+    }, [])
+
+    function test() {
+        console.log(reviews)
+        return(
+            <div>test</div>
+        )
+    }
+
     return (
         <div>
             <Topbar/>
@@ -99,9 +121,13 @@ export default function Profile() {
                     {!isUser() && isAdmin ?
                         <div>
                             {!currentUser.isBanned ?
-                            <button className="text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg" onClick={banThisUser}>BAN</button>
-                            : <button className="text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg" onClick={unbanThisUser}>UNBAN</button>
-                            } 
+                                <button
+                                    className="text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg"
+                                    onClick={banThisUser}>BAN</button>
+                                : <button
+                                    className="text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg"
+                                    onClick={unbanThisUser}>UNBAN</button>
+                            }
                         </div> : <></>
                     }
                 </div>
@@ -115,7 +141,7 @@ export default function Profile() {
                                     <label
                                         className={`${isUser() || isAdmin ? 'hover:cursor-pointer' : ''}`}
                                         htmlFor={'edit-toggle'}>Profile</label>
-                                    {(isUser() || isAdmin)&& <button
+                                    {(isUser() || isAdmin) && <button
                                         id={'edit-toggle'}
                                         className={`m-auto md:inline md:ml-1`}
                                         onClick={(event) => {
@@ -162,37 +188,61 @@ export default function Profile() {
                                             }
                                         }}/>
                                     </div>
-                                    </>}
-                                
+                                </>}
+
                                 {isUser() && editing && <>
                                     <div className="text-left mb-3">
-                                        <label className="text-white">Change Email: </label>
-                                        <input className="p-1" required={false} onChange={(e) => {
-                                            setEmail(e.target.value);
-                                        }}/>
+                                        <label className="text-white">Change
+                                            Email: </label>
+                                        <input className="p-1" required={false}
+                                               onChange={(e) => {
+                                                   setEmail(e.target.value);
+                                               }}/>
                                     </div>
                                     <div className="text-left">
-                                        <label className="text-white">Change Password: </label>
-                                        <input className="p-1" required={false} type="password" onChange={(e) => {
-                                            setPassword(e.target.value);
-                                        }}/>
+                                        <label className="text-white">Change
+                                            Password: </label>
+                                        <input className="p-1" required={false}
+                                               type="password"
+                                               onChange={(e) => {
+                                                   setPassword(e.target.value);
+                                               }}/>
                                     </div>
                                 </>}
 
                                 {(isUser() || isAdmin) && editing && <>
                                     {editing &&
                                         <>
-                                        <div className={!errorFlag ? "hidden" : ""}>
-                                            <p className="text-red-500">{errorMessage}</p>
-                                        </div>
-                                        <button
-                                            className={`text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg`}
-                                            type="submit">Submit</button> </>}
+                                            <div
+                                                className={!errorFlag ? "hidden" : ""}>
+                                                <p className="text-red-500">{errorMessage}</p>
+                                            </div>
+                                            <button
+                                                className={`text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg`}
+                                                type="submit">Submit
+                                            </button>
+                                        </>}
                                 </>}
                             </div>
                         </div>
                     </div>
                 </form>
+                {!loading &&
+                    <div>
+                        <h1
+                            className={`text-white font-medium text-4xl mb-10
+                                mt-20 pb-5 m-auto w-fit px-20`}
+                            style={{
+                                borderBottom: 'gray 1px' +
+                                    ' solid'
+                            }}>
+                            REVIEWS</h1>
+                        <div className={'w-full md:w-8/12 2xl:w-6/12' +
+                            '  m-auto'}>
+                            <ReviewList reviews={reviews}/>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     );

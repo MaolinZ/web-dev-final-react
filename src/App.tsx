@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Auth from "./components/pages/Auth";
 import { BrowserRouter, Navigate } from "react-router-dom";
@@ -36,7 +35,6 @@ function App() {
         onAuthStateChanged(auth, async(user) => {
             setLoading(true);
             const currentUser = await getUserById(user?.uid!);
-            console.log(currentUser);
             if (currentUser.isBanned) {
                 await logout().then(() => 
                     alert("You are banned! Please contact admins if you think this is an error."

@@ -9,6 +9,8 @@ import {IconContext} from 'react-icons'
 import {IoHeart, IoHeartDislike} from "react-icons/io5";
 import {getUserById} from "../services/user-services";
 import {UserProps} from "../props/UserProps";
+import {getSong} from "../services/spotify-services";
+import {SongmetricsProps} from "../props/SongmetricsProps";
 
 export default function ReviewForm(props: { songUri: string }) {
     const nav = useNavigate();
@@ -20,12 +22,15 @@ export default function ReviewForm(props: { songUri: string }) {
         event.preventDefault();
         if (auth.currentUser) {
             const user:UserProps = await getUserById(auth.currentUser.uid)
+            const song:SpotifyApi.TrackObjectFull = await getSong(props.songUri)
             const response = await addReview({
+                "song_name": song.name,
                 "username": user.username,
                 "description": description,
                 "song_uri": props.songUri,
                 "uid": auth.currentUser.uid,
-                "liked": liked
+                "liked": liked,
+                "timestamp": new Date()
             })
             await updateSongmetrics(props.songUri!, {reviews: [response]});
             nav(0);

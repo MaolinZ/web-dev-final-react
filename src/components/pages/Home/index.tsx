@@ -6,7 +6,7 @@ import {getAllReviews} from "../../services/review-services";
 import {onAuthStateChanged} from "firebase/auth";
 import {useNavigate} from "react-router";
 import {ReviewProps} from "../../props/ReviewProps";
-import Review from "../search-results/details/review/review";
+import ReviewList from "../search-results/details/review/review-list";
 
 export default function Home() {
     const nav = useNavigate();
@@ -39,14 +39,16 @@ export default function Home() {
         <div>
             <Topbar></Topbar>
             {auth.currentUser !== null &&
-                <h1 className={'text-white text-4xl text-3xl'}>
-                    {`Welcome ` + user.username}</h1>}
-            {!loading &&
-                reviews.map((review) => {
-                    return (<div className={'text-white'}>
-                        <Review  review={review}/>
-                    </div>)
-                })}
+                <h1 className={'text-white text-5xl text-3xl font-bold w-fit' +
+                    ' mr-auto'}>
+                    {`Welcome ` + user.username + '!'}</h1>}
+            <div className={'ml-8'}>
+                <h1 className={'text-3xl text-white w-fit mr-auto my-4'}>Recent Reviews</h1>
+                <div>
+                    {!loading &&
+                        <ReviewList reviews={reviews}/>}
+                </div>
+            </div>
         </div>
     )
 

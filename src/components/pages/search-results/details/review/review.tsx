@@ -4,8 +4,9 @@ import {getProfileImageURL} from "../../../../services/user-services";
 import {useNavigate} from "react-router";
 import {auth} from "../../../../config/firebase";
 import {ImCross} from "react-icons/im";
+import {deleteReviewById} from "../../../../services/review-services";
 
-export default function Review(props: { review: ReviewProps }) {
+export default function Review(props: { review: ReviewProps }, isAdmin: boolean = false) {
 
     const {review} = props
 
@@ -14,10 +15,14 @@ export default function Review(props: { review: ReviewProps }) {
 
     const navigate = useNavigate()
 
+    const handleDelete = async () => {
+        const res = await deleteReviewById(review.uid!, review.song_uri!)
+        navigate(0)
+    }
+
     useEffect(() => {
         const getImage = async () => {
             setLoading(true);
-            console.log("HEJRE: " + review.uid)
             const response = await getProfileImageURL(review.uid!)
             await setImage(response)
             setLoading(false)
@@ -31,43 +36,53 @@ export default function Review(props: { review: ReviewProps }) {
 
     const canDelete = () => {
         if (auth.currentUser) {
-            return auth.currentUser.uid == review.uid
+            return isAdmin || auth.currentUser.uid == review.uid
         }
         return false
     }
-
-    const handleDelete = () => {
-
-console.log('12321')
-    return(1)
-    }
-
 
     return (
         <div className={'w-full p-8 bg-spotify-dark '}>
             {loading ? 'Loading...' : <div>
                 <div
                     className={'flex items-center mb-8'}>
-                    <div className={'flex items-center hover:cursor-pointer'}
-                         onClick={() => {
-                             clickUser()
-                         }}>
+                    <div className={'flex items-center justify-center'}>
                         <img
                             className={'w-12 h-12 rounded-full bg-white mr-4'}
                             src={image ? image : ''}
                             alt=""/>
-                        <div className={'text-left font-medium text-white'}>
-                            {review.username}</div>
+                        <div>
+                            <div
+                                className={'block text-left text-white hover:font-extrabold'}>
+                                {review.username}
+                            </div>
+                            <div className={'align-text-start flex'}>
+                                <span className={'text-xs text-gray-500'}>
+                                <>{`${review.liked ? 'liked ' : 'disliked '}`}</>
+                            </span>
+                                <span
+                                    className={'ml-2 text-gray-500' +
+                                        ' hover:text-white text-sm font-bold' +
+                                        ' hover:cursor-pointer'}
+                                    onClick={() => {
+                                        navigate(`/details/${review.song_uri}`)
+                                    }}
+                                >{review.song_name}</span>
+                            </div>
+
+                        </div>
                     </div>
-                    {canDelete() ? <div className={'ml-auto mr-8 float-right' +
+                    <div>{review.timestamp!.toString()}</div>
+                    {canDelete() ? <div className={'ml-auto mr-4 float-right' +
                         ' hover:cursor-pointer hover:text-red-400'}
-                                        onClick={() => {handleDelete()}}>
-                        <ImCross />
+                                        onClick={() => {
+                                            handleDelete()
+                                        }}>
+                        <ImCross/>
                     </div> : ''}
                 </div>
-                <div className={'ml-2 text-left text-sm lg:text-base' +
+                <div className={'m-2 text-left text-sm lg:text-base' +
                     ' text-gray-500'}>{review.description}</div>
-
             </div>}
         </div>
     )

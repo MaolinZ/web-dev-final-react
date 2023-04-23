@@ -19,8 +19,8 @@ export const updateReview = async (id: string, review: ReviewProps) => {
     return response.data;
 }
 
-export const getReviewById = async (id: string) => {
-    const response = await axios.get(`${REVIEW_API}/${id}`);
+export const getReviewByUid = async (id: string) => {
+    const response = await axios.get(`${REVIEW_API}/user/${id}`);
     return response.data;
 }
 
@@ -32,4 +32,9 @@ export const getReviewsBySong = async (uri: string) => {
 export const updateReviewByUid = async (uid: string, review: ReviewProps) => {
     const response = await axios.post(`${REVIEW_API}/update/${uid}`, {review: review});
     return response.data;
+}
+
+export const deleteReviewById = async (uid: string, uri: string) => {
+    const response = await axios.delete(`${REVIEW_API}/${uri}/${uid}`)
+    return response.data
 }
