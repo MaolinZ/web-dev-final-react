@@ -7,7 +7,7 @@ export default function ReviewList(props: { reviews: ReviewProps[] }) {
     return (
         <div>
                 <div className={'review-list m-auto w-full'}>
-                    {props.reviews.map((r) => <Review review={r}/>)}
+                    {props.reviews.map((r, i) => <Review review={r} key={i}/>)}
                 </div>
         </div>
     );

@@ -29,7 +29,8 @@ export default function ReviewForm(props: { songUri: string }) {
                 "description": description,
                 "song_uri": props.songUri,
                 "uid": auth.currentUser.uid,
-                "liked": liked
+                "liked": liked,
+                "timestamp": new Date()
             })
             await updateSongmetrics(props.songUri!, {reviews: [response]});
             nav(0);

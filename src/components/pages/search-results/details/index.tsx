@@ -32,17 +32,21 @@ export default function Details() {
             await addSongmetrics(song_uri);
         }
 
-        const fetchSongmetrics = async () => {
-            const response = await getReviewsBySong(song?.uri!);
-            await setReviews(response)
-        }
-
         setLoading(true)
         fetchSong(uri!)
         fetchFeatures(uri!)
         initSongmetrics(uri!);
-        fetchSongmetrics();
         setLoading(false)
+    }, [])
+
+    useEffect(() => {
+        const getReviews = async () => {
+            const response = await getReviewsBySong(uri!)
+            console.log(response)
+            setReviews(response)
+        }
+
+        getReviews()
     }, [])
 
     const toISO = (ms: number) => {
@@ -51,7 +55,6 @@ export default function Details() {
     }
 
     const toKey = (pitchClass: number, mode: number) => {
-
         if (pitchClass == undefined || mode == undefined) {
             return '--'
         }
