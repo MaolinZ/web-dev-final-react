@@ -6,10 +6,13 @@ import Stat from "./stat";
 import ReviewForm from "../../../forms/ReviewForm";
 import {addSongmetrics} from "../../../services/songmetrics-services";
 import ReviewList from "./review/review-list";
+import {getReviewsBySong} from "../../../services/review-services";
+import {ReviewProps} from "../../../props/ReviewProps";
 
 export default function Details() {
 
     const [song, setSong] = useState<SpotifyApi.TrackObjectFull>()
+    const [reviews, setReviews] = useState<ReviewProps[]>([])
     const [features, setFeatures] = useState<SpotifyApi.AudioFeaturesResponse>()
     const [loading, setLoading] = useState(true)
     const { uri } = useParams()
@@ -29,10 +32,16 @@ export default function Details() {
             await addSongmetrics(song_uri);
         }
 
+        const fetchSongmetrics = async () => {
+            const response = await getReviewsBySong(song?.uri!);
+            await setReviews(response)
+        }
+
         setLoading(true)
         fetchSong(uri!)
         fetchFeatures(uri!)
         initSongmetrics(uri!);
+        fetchSongmetrics();
         setLoading(false)
     }, [])
 
@@ -108,7 +117,7 @@ export default function Details() {
                                 REVIEWS</h1>
                             <div className={'w-full md:w-8/12 2xl:w-6/12' +
                                 '  m-auto'}>
-                                <ReviewList songUri={uri!} />
+                                <ReviewList reviews={reviews} />
                             </div>
                         </div>
                     </div>

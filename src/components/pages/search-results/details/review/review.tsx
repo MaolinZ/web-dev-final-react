@@ -5,7 +5,7 @@ import {useNavigate} from "react-router";
 import {auth} from "../../../../config/firebase";
 import {ImCross} from "react-icons/im";
 
-export default function Review(props: { review: ReviewProps }) {
+export default function Review(props: { review: ReviewProps }, isAdmin:boolean = false) {
 
     const {review} = props
 
@@ -31,7 +31,7 @@ export default function Review(props: { review: ReviewProps }) {
 
     const canDelete = () => {
         if (auth.currentUser) {
-            return auth.currentUser.uid == review.uid
+            return isAdmin || auth.currentUser.uid == review.uid
         }
         return false
     }
@@ -57,7 +57,10 @@ console.log('12321')
                             src={image ? image : ''}
                             alt=""/>
                         <div className={'text-left font-medium text-white'}>
-                            {review.username}</div>
+                            {review.username}
+                            <div className={''}>{`${review.liked ? 'liked' : 'disliked'}` +
+                                review.song_name}</div>
+                        </div>
                     </div>
                     {canDelete() ? <div className={'ml-auto mr-8 float-right' +
                         ' hover:cursor-pointer hover:text-red-400'}
