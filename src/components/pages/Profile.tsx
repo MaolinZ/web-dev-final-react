@@ -3,8 +3,10 @@ import {useEffect, useState} from "react";
 import {auth} from "../config/firebase";
 import {useNavigate, useParams} from "react-router";
 import {
+    banUser,
     getProfileImageURL,
     getUserById,
+    unbanUser,
     updateUser,
     uploadProfileImage
 } from "../services/user-services";
@@ -13,11 +15,11 @@ import Topbar from "../topbar";
 import {BiEdit} from 'react-icons/bi'
 import {IconContext} from "react-icons";
 import { changeUserEmail, changeUserPassword } from "../services/auth-services";
+import { updateReviewByUid } from "../services/review-services";
 
 
 // TODO Add check for invalid uid route parameter
 export default function Profile() {
-    const nav = useNavigate();
     const [editing, setEditing] = useState(false)
     const [currentUser, setCurrentUser] = useState<UserProps>({});
     const [profileImg, setProfileImg] = useState<File>();
@@ -26,6 +28,7 @@ export default function Profile() {
     const [password, setPassword] = useState<string>("");
     const [errorFlag, setErrorFlag] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
     const {uid} = useParams()
     const navigate = useNavigate()
@@ -34,20 +37,31 @@ export default function Profile() {
         return uid == auth.currentUser?.uid
     }
 
+    const banThisUser = async () => {
+        await banUser(uid!);
+        navigate(0);
+    }
+    const unbanThisUser = async () => {
+        await unbanUser(uid!);
+        navigate(0);
+    }
+
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (auth.currentUser !== null && isUser()) {
+        console.log("Submit")
+        if (auth.currentUser !== null && (isUser() || isAdmin)) {
             const username = (document.getElementById('user-form') as HTMLInputElement).value
             const biography = (document.getElementById('bio-form') as HTMLInputElement).value
             try {
-                await updateUser(auth.currentUser.uid, {username, biography});
+                await updateUser(uid!, {username, biography});
+                await updateReviewByUid(uid!, {username: username});
             } catch {
                 setErrorFlag(true);
                 setErrorMessage("Username already exists!")
                 return;
             }
             if (profileImg) {
-                await uploadProfileImage(auth.currentUser.uid, profileImg)
+                await uploadProfileImage(uid!, profileImg)
             }
             try {
                 if (email && email !== "") {
@@ -71,6 +85,8 @@ export default function Profile() {
             setCurrentUser(response);
             const img = await getProfileImageURL(uid!);
             setCurrProfileImg(img);
+            const lookingUser = await getUserById(user?.uid!);
+            setIsAdmin(lookingUser.isAdmin);
         });
     }, []);
 
@@ -79,6 +95,16 @@ export default function Profile() {
             <Topbar/>
             <div
                 className="h-full text-gray-500 bg-spotify-gray m-auto pt-10 pb-20 w-12/12 lg:w-9/12 2xl:w-8/12">
+                <div>
+                    {!isUser() && isAdmin ?
+                        <div>
+                            {!currentUser.isBanned ?
+                            <button className="text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg" onClick={banThisUser}>BAN</button>
+                            : <button className="text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg" onClick={unbanThisUser}>UNBAN</button>
+                            } 
+                        </div> : <></>
+                    }
+                </div>
                 <form onSubmit={onSubmit}>
                     <div className={'md:mx-20'}>
                         <div className={'md:flex items-center'}>
@@ -87,14 +113,14 @@ export default function Profile() {
                             <div className={'flex flex-col'}>
                                 <h1 className={`text-gray-500 w-fit m-auto md:m-0`}>
                                     <label
-                                        className={`${isUser() ? 'hover:cursor-pointer' : ''}`}
+                                        className={`${isUser() || isAdmin ? 'hover:cursor-pointer' : ''}`}
                                         htmlFor={'edit-toggle'}>Profile</label>
-                                    {isUser() && <button
+                                    {(isUser() || isAdmin)&& <button
                                         id={'edit-toggle'}
                                         className={`m-auto md:inline md:ml-1`}
                                         onClick={(event) => {
                                             event.preventDefault()
-                                            if (isUser()) {
+                                            if (isUser() || isAdmin) {
                                                 setEditing(!editing)
                                             }
                                         }}
@@ -126,7 +152,7 @@ export default function Profile() {
                                     readOnly={!editing}/>
                             </div>
                             <div className={`my-4`}>
-                                {isUser() && editing && <>
+                                {(isUser() || isAdmin) && editing && <>
                                     <div>
                                         <label className={'text-white'}>Change
                                             Avatar: </label>
@@ -136,6 +162,9 @@ export default function Profile() {
                                             }
                                         }}/>
                                     </div>
+                                    </>}
+                                
+                                {isUser() && editing && <>
                                     <div className="text-left mb-3">
                                         <label className="text-white">Change Email: </label>
                                         <input className="p-1" required={false} onChange={(e) => {
@@ -148,6 +177,9 @@ export default function Profile() {
                                             setPassword(e.target.value);
                                         }}/>
                                     </div>
+                                </>}
+
+                                {(isUser() || isAdmin) && editing && <>
                                     {editing &&
                                         <>
                                         <div className={!errorFlag ? "hidden" : ""}>

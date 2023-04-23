@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser, login } from "../services/auth-services";
+import { createUser, login, logout } from "../services/auth-services";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { getUserById } from "../services/user-services";
 
 export default function UserForm(props: { submitMethod: string }) {
     const nav = useNavigate();

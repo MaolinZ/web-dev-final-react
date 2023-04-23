@@ -47,3 +47,13 @@ export const getAllUsers = async () : Promise<UserProps[]> => {
     const response = await axios.get(USER_API);
     return response.data;
 }
+
+export const banUser = async(uid: string) => {
+    const response = await axios.post(USER_API + "/update", {uid: uid, user: {isBanned: true}})
+    return response.data;
+}
+
+export const unbanUser = async(uid: string) => {
+    const response = await axios.post(USER_API + "/update", {uid: uid, user: {isBanned: false}})
+    return response.data;
+}
