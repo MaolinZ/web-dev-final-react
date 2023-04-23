@@ -38,12 +38,12 @@ export default function Home() {
     return (
         <div>
             <Topbar></Topbar>
-            <div className={'md:mx-8'}>
+            <div className={'md:mx-8 lg:w-8/12 lg:m-auto'}>
                 {auth.currentUser !== null &&
-                    <h1 className={`text-white md:text-5xl text-3xl font-bold mt-4 w-fit text-left`}>
+                    <h1 className={`text-white lg:text-5xl text-3xl font-bold mt-4 w-fit text-left`}>
                         {`Welcome ` + user.username + '!'}</h1>}
                 <h1 className={`text-3xl text-white w-fit mr-auto my-4 md:ml-0 ml-4`}>Recent Reviews</h1>
-                <div className={'lg:w-8/12 m-auto'}>
+                <div className={'m-auto'}>
                     {!loading &&
                         <ReviewList reviews={reviews}/>}
                 </div>

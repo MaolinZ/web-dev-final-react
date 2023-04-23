@@ -119,7 +119,7 @@ export default function Details() {
                                 style={{borderBottom: 'gray 1px' +
                                         ' solid'}}>
                                 REVIEWS</h1>
-                            <div className={'w-full md:w-8/12 2xl:w-6/12' +
+                            <div className={'w-full md:w-10/12 2xl:w-7/12' +
                                 '  m-auto'}>
                                 <ReviewList reviews={reviews} />
                             </div>

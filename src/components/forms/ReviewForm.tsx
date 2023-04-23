@@ -86,6 +86,7 @@ export default function ReviewForm(props: { songUri: string }) {
                         className={`text-white rounded-lg bg-spotify-green py-1 px-4`}
                         type="submit">Submit
                     </button>
+                    <div className={'text-xs mt-3'}>*Any old reviews will be overwritten</div>
                 </div>
             </form>
         )

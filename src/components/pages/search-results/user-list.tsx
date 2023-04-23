@@ -25,7 +25,6 @@ export default function UserList() {
         async function findUsers() {
             setLoading(true)
             const response: UserProps[] = await getAllUsers()
-            // const results = [tempUser, tempUser, tempUser, tempUser]
             setResults(response.filter((user) => {
                 return user.username?.indexOf(query!) !== -1
             }))
