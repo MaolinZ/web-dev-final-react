@@ -62,26 +62,26 @@ export default function UserForm(props: { submitMethod: string }) {
     return (
         <div className={'text-gray-500'}>
             <div>
-                <span>{props.submitMethod === 'login' ? "Login now!" : "Sign up now!"}</span>
+                <h1 className="text-white pb-5 text-2xl">{props.submitMethod === 'login' ? "Login now!" : "Sign up now!"}</h1>
             </div>
-            <div>
-                <form onSubmit={props.submitMethod === 'login' ? handleLogin : handleCreateUser}>
+            <div className="flex justify-center">
+                <form className="bg-spotify-dark p-5" onSubmit={props.submitMethod === 'login' ? handleLogin : handleCreateUser}>
                     <div>
-                        <label htmlFor="email">Email</label>
+                        <label className="font-bold" htmlFor="email">Email</label>
                     </div>
-                    <div>
+                    <div className="pb-2">
                         <input id="email" type="email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div>
-                        <label htmlFor="password">Password</label>
+                        <label className="font-bold" htmlFor="password">Password</label>
                     </div>
-                    <div>
+                    <div className="pb-2">
                         <input id="password" type="password" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     {props.submitMethod !== 'login' ?
                         <div>
                             <div>
-                                <label htmlFor="confirmPassword">Confirm Password</label>
+                                <label className="font-bold" htmlFor="confirmPassword">Confirm Password</label>
                             </div>
                             <div>
                                 <input id="confirmPassword" type="password" onChange={(e) => setConfirmPassword(e.target.value)} />
@@ -89,7 +89,7 @@ export default function UserForm(props: { submitMethod: string }) {
                         </div> : <></>
                     }
                     <div>
-                        <button type="submit">Submit</button>
+                        <button className="text-white font-bold my-4 py-1 px-4 bg-spotify-green rounded-lg" type="submit">Submit</button>
                     </div>
                 </form>
                 <div className={errorFlag ? "text-red-500" : "hidden"}>

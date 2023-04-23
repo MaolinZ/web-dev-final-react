@@ -118,7 +118,7 @@ export default function Profile() {
             <div
                 className="h-full text-gray-500 bg-spotify-gray m-auto pt-10 pb-20 w-12/12 lg:w-9/12 2xl:w-8/12">
                 <div>
-                    {!isUser() && isAdmin ?
+                    {!isUser() && isAdmin && !currentUser.isAdmin ?
                         <div>
                             {!currentUser.isBanned ?
                                 <button
@@ -139,14 +139,14 @@ export default function Profile() {
                             <div className={'flex flex-col'}>
                                 <h1 className={`text-gray-500 w-fit m-auto md:m-0`}>
                                     <label
-                                        className={`${isUser() || isAdmin ? 'hover:cursor-pointer' : ''}`}
+                                        className={`${isUser() || (isAdmin && !currentUser.isAdmin)  ? 'hover:cursor-pointer' : ''}`}
                                         htmlFor={'edit-toggle'}>Profile</label>
-                                    {(isUser() || isAdmin) && <button
+                                    {(isUser() || (isAdmin && !currentUser.isAdmin) ) && <button
                                         id={'edit-toggle'}
                                         className={`m-auto md:inline md:ml-1`}
                                         onClick={(event) => {
                                             event.preventDefault()
-                                            if (isUser() || isAdmin) {
+                                            if (isUser() || (isAdmin && !currentUser.isAdmin) ) {
                                                 setEditing(!editing)
                                             }
                                         }}
@@ -178,7 +178,7 @@ export default function Profile() {
                                     readOnly={!editing}/>
                             </div>
                             <div className={`my-4`}>
-                                {(isUser() || isAdmin) && editing && <>
+                                {(isUser() || (isAdmin && !currentUser.isAdmin) ) && editing && <>
                                     <div>
                                         <label className={'text-white'}>Change
                                             Avatar: </label>
@@ -210,7 +210,7 @@ export default function Profile() {
                                     </div>
                                 </>}
 
-                                {(isUser() || isAdmin) && editing && <>
+                                {(isUser() || (isAdmin && !currentUser.isAdmin) ) && editing && <>
                                     {editing &&
                                         <>
                                             <div
