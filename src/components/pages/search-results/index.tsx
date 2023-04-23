@@ -3,21 +3,55 @@ import Topbar from "../../topbar";
 import {useNavigate} from "react-router-dom";
 import SongList from "./song-list";
 import UserList from "./user-list";
-import {GrPrevious, GrNext} from "react-icons/gr";
+import {GrNext, GrPrevious} from "react-icons/gr";
 import {IconContext} from "react-icons";
+import {UserProps} from "../../props/UserProps";
+import {getAllUsers} from "../../services/user-services";
+import * as service from "../../services/spotify-services";
 
 export default function SearchResults() {
     const searchParams = new URLSearchParams(window.location.search)
     const navigate = useNavigate()
 
+    const query = searchParams.get("query")
     const offset = Number(searchParams.get("page"))
     const type = searchParams.get("type")
+
+    const [loading, setLoading] = useState(true)
+    const [users, setUsers] = useState<UserProps[]>([])
+    const [songs, setSongs] = useState<SpotifyApi.SearchResponse>()
+
+
+    useEffect(() => {
+        async function findUsers() {
+            const itemCount = 10
+
+            setLoading(true)
+            const response: UserProps[] = await getAllUsers()
+            const validUsers = response.filter((user) => {
+                return !user.isBanned && user.username?.indexOf(query!) !== -1
+            })
+
+            const start = (itemCount * offset)
+
+            setUsers(validUsers.slice(start, start + itemCount))
+            setLoading(false)
+        }
+
+        async function findSongs() {
+            setLoading(true)
+            const results = await service.searchSongs(query!, offset)
+            setSongs(results)
+            setLoading(false)
+        }
+
+        type === '1' ? findUsers() : findSongs()
+    }, [offset])
 
     const clickPrevious = () => {
         if (offset > 0) {
             searchParams.set('page', (offset - 1).toString())
             navigate(`/search?${searchParams.toString()}`)
-            navigate(0)
         }
     }
 
@@ -25,7 +59,6 @@ export default function SearchResults() {
         if (document.getElementsByClassName('result-item').length == 10) {
             searchParams.set('page', (offset + 1).toString())
             navigate(`/search?${searchParams.toString()}`)
-            navigate(0)
         }
     }
 
@@ -38,7 +71,9 @@ export default function SearchResults() {
                     ' bg-spotify-dark'}>
                     <div className={'search-results m-auto my-4' +
                         ' bg-spotify-dark'}>
-                        {type === '1' ? <UserList/> : <SongList/>}
+                        {!loading ? type === '1' ? <UserList users={users}/>
+                            :
+                            <SongList songs={songs!}/> : ''}
                     </div>
                 </div>
                 <div className={'page-buttons flex justify-center' +

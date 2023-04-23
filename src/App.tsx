@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Auth from "./components/pages/Auth";
-import { BrowserRouter, Navigate } from "react-router-dom";
-import { Routes, Route } from "react-router";
+import {BrowserRouter, Navigate} from "react-router-dom";
+import {Route, Routes} from "react-router";
 import Login from "./components/pages/Login";
 import SignUp from "./components/pages/SignUp";
 import Home from "./components/pages/Home";
 import SearchResults from "./components/pages/search-results";
 import Details from "./components/pages/search-results/details";
 import Profile from './components/pages/Profile';
-import { auth } from './components/config/firebase';
-import { getUserById } from './components/services/user-services';
-import { logout } from './components/services/auth-services';
-import { onAuthStateChanged } from '@firebase/auth';
+import {auth} from './components/config/firebase';
+import {getUserById} from './components/services/user-services';
+import {logout} from './components/services/auth-services';
+import {onAuthStateChanged} from '@firebase/auth';
+import Bans from "./components/pages/bans";
 
 const sizer = () => {
 
@@ -48,7 +49,7 @@ function App() {
         <>
             {!loading ?
                 <div className="App">
-                    {sizer()}
+                    {/*{sizer()}*/}
                     <BrowserRouter>
                         <Routes>
                             <Route index element={<Home />} />
@@ -59,6 +60,7 @@ function App() {
                                 element={<SearchResults />} />
                             <Route path={"/details/:uri"} element={<Details />} />
                             <Route path={"/profile/:uid"} element={<Profile />} />
+                            <Route path={"/bans/:uid"} element={<Bans />} />
                             <Route path={'*'} element={<Navigate to={'/'} />} />
                         </Routes>
                     </BrowserRouter>

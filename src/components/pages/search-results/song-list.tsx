@@ -1,46 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import SongResult from "./song-result";
-import {useNavigate} from "react-router-dom";
-import * as service from "../../services/spotify-services";
 
-export default function SongList() {
+export default function SongList(props: { songs: SpotifyApi.SearchResponse }) {
 
-    const searchParams = new URLSearchParams(window.location.search)
-    const [results, setResults] = useState<SpotifyApi.SearchResponse>({})
-    const [loading, setLoading] = useState(true)
-    const navigate = useNavigate()
+    const {songs} = props
 
-    const query = searchParams.get("query")
-    const offset = Number(searchParams.get("page"))
-
-    useEffect(() => {
-
-        async function fetchSongs() {
-            setLoading(true)
-            const results = await service.searchSongs(query!, offset)
-            setResults(results)
-            setLoading(false)
-        }
-
-        fetchSongs()
-    }, [offset])
-
-    return(
+    return (
         <>
-            {loading ? <h1 className={'text-white'}>Loading...</h1> :
-                <>
-                    {results.tracks?.items.map((s, i) =>
-                        <div className={'hover:bg-spotify-gray px-4'}>
-                            <div
-                                className={'result-item flex justify-around items-center' +
-                                    ' cursor-default'}>
-                                <h1 className={'text-white font-bold px-8'}>
-                                    {i + 1}
-                                </h1>
-                                <SongResult song={s}/>
-                            </div>
-                        </div>)}
-                </>}
+            {songs.tracks?.items.map((s, i) =>
+                <div className={'hover:bg-spotify-gray px-4'} key={i}>
+                    <div
+                        className={'result-item flex justify-around items-center' +
+                            ' cursor-default'}>
+                        <h1 className={'text-white font-bold px-8'}>
+                            {i + 1}
+                        </h1>
+                        <SongResult song={s}/>
+                    </div>
+                </div>)}
         </>
     )
 }

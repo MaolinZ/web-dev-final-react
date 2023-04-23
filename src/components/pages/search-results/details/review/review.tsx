@@ -76,7 +76,7 @@ export default function Review(props: { review: ReviewProps }, isAdmin: boolean 
                                 onClick={clickUser}/>
                             <div>
                                 <div
-                                    className={`block text-left text-gray-300 hover:text-white hover:cursor-pointer`}
+                                    className={`block text-left text-gray-200 hover:text-white hover:cursor-pointer`}
                                     onClick={clickUser}>
                                     {review.username}
                                 </div>
@@ -98,7 +98,7 @@ export default function Review(props: { review: ReviewProps }, isAdmin: boolean 
                         </div>
                     </div>
                     <div className={'m-2 text-left text-sm lg:text-base' +
-                        ' text-gray-500'}>{review.description}</div>
+                        ' text-gray-300'}>{review.description}</div>
                 </div>}
         </div>
     )

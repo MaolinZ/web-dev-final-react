@@ -5,10 +5,12 @@ import {auth} from "../config/firebase";
 import NavTab from "./nav-tab";
 import {onAuthStateChanged} from "firebase/auth";
 import {logout} from "../services/auth-services";
+import {getUserById} from "../services/user-services";
 
 export default function Topbar() {
 
     const [loggedIn, setLoggedIn] = useState(false)
+    const [admin, setAdmin] = useState(false)
     const [isXS, setXS] = useState(false)
 
     useEffect(() => {
@@ -16,6 +18,17 @@ export default function Topbar() {
             setLoggedIn(user !== null)
         });
     }, []);
+
+    useEffect(() => {
+        const checkAdmin = async () => {
+            if (loggedIn) {
+                const user = await getUserById(auth.currentUser?.uid!)
+                setAdmin(user.isAdmin)
+            }
+        }
+
+        checkAdmin()
+    }, [loggedIn])
 
     useEffect(() => {
         const handleResize = () => {
@@ -41,15 +54,21 @@ export default function Topbar() {
                         src="https://zeevector.com/wp-content/uploads/Spotify-Black-and-White-Logo.png"
                         alt=""/>
                 </Link>
-                {isXS ? '' : <div className={'search-wrapper hidden sm:block ml-10'}>
-                    <SearchBar/>
-                </div>}
-                <div className={"mx-auto sm:ml-auto sm:mr-4"}>
+                {isXS ? '' :
+                    <div className={'search-wrapper hidden sm:block ml-10'}>
+                        <SearchBar/>
+                    </div>}
+                <div className={"mx-auto sm:ml-auto sm:mr-0"}>
                     <ul className={"page-tabs"}>
                         <NavTab label={"Home"} to={"/"}/>
-                        { loggedIn ?
+                        {loggedIn ?
                             <>
-                                <NavTab label={"Profile"} to={`/profile/${auth.currentUser?.uid}`}/>
+                                <NavTab label={"Profile"}
+                                        to={`/profile/${auth.currentUser?.uid}`}/>
+                                {admin ?
+                                    <NavTab
+                                        label={"Bans"}
+                                        to={`/bans/${auth.currentUser?.uid}`}/> : ''}
                                 <span onClick={(event) => {
                                     logout()
                                 }
