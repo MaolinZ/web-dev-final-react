@@ -18,6 +18,7 @@ export default function Details() {
     const { uri } = useParams()
 
     useEffect(() => {
+
         const fetchSong = async (uri: string) => {
             const response = await service.getSong(uri)
             setSong(response)

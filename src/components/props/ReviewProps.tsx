@@ -5,5 +5,5 @@ export interface ReviewProps {
     description?: string,
     liked?: boolean,
     uid?: string,
-    timestamp?: Date,
+    timestamp?: number,
 }
