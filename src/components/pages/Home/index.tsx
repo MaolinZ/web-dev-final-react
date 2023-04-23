@@ -40,10 +40,10 @@ export default function Home() {
             <Topbar></Topbar>
             <div className={'md:mx-8'}>
                 {auth.currentUser !== null &&
-                    <h1 className={`text-white md:text-5xl text-3xl font-bold mt-4 w-fit mr-auto`}>
+                    <h1 className={`text-white md:text-5xl text-3xl font-bold mt-4 w-fit text-left`}>
                         {`Welcome ` + user.username + '!'}</h1>}
                 <h1 className={`text-3xl text-white w-fit mr-auto my-4 md:ml-0 ml-4`}>Recent Reviews</h1>
-                <div>
+                <div className={'lg:w-8/12 m-auto'}>
                     {!loading &&
                         <ReviewList reviews={reviews}/>}
                 </div>
