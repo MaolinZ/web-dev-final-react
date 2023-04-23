@@ -1,35 +1,75 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ReviewProps} from "../../../../props/ReviewProps";
-import {getUserById} from "../../../../services/user-services";
-import {Link} from "react-router-dom";
+import {getProfileImageURL} from "../../../../services/user-services";
+import {useNavigate} from "react-router";
+import {auth} from "../../../../config/firebase";
+import {ImCross} from "react-icons/im";
 
 export default function Review(props: { review: ReviewProps }) {
 
     const {review} = props
 
-    const [username, setUsername] = useState<string>("");
+    const [image, setImage] = useState<string>()
     const [loading, setLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        const fetchInfo = async () => {
-            setLoading(true);
-            const user = await getUserById(review.uid!);
-            setUsername(user.username);
-            setLoading(false);
-        }
+    const navigate = useNavigate()
 
-        fetchInfo();
-    }, []);
+    useEffect(() => {
+        const getImage = async () => {
+            setLoading(true);
+            console.log("HEJRE: " + review.uid)
+            const response = await getProfileImageURL(review.uid!)
+            await setImage(response)
+            setLoading(false)
+        }
+        getImage()
+    }, [])
+
+    const clickUser = () => {
+        navigate(`/profile/${review.uid!}`)
+    }
+
+    const canDelete = () => {
+        if (auth.currentUser) {
+            return auth.currentUser.uid == review.uid
+        }
+        return false
+    }
+
+    const handleDelete = () => {
+
+console.log('12321')
+    return(1)
+    }
+
 
     return (
-        <>
-            {!loading ? 
-            <div className="bg-white text-black">
-                PLEASE
-                <Link to={`/profile/${review.uid}`}>{username}</Link>
-                <p>{review.description}</p>
-            </div> : <></>}
+        <div className={'w-full p-8 bg-spotify-dark '}>
+            {loading ? 'Loading...' : <div>
+                <div
+                    className={'flex items-center mb-8'}>
+                    <div className={'flex items-center hover:cursor-pointer'}
+                         onClick={() => {
+                             clickUser()
+                         }}>
+                        <img
+                            className={'w-12 h-12 rounded-full bg-white mr-4'}
+                            src={image ? image : ''}
+                            alt=""/>
+                        <div className={'text-left font-medium text-white'}>
+                            {review.username}</div>
+                    </div>
+                    {canDelete() ? <div className={'ml-auto mr-8 float-right' +
+                        ' hover:cursor-pointer hover:text-red-400'}
+                                        onClick={() => {handleDelete()}}>
+                        <ImCross />
+                    </div> : ''}
+                </div>
+                <div className={'ml-2 text-left text-sm lg:text-base' +
+                    ' text-gray-500'}>{review.description}</div>
 
-        </>
-    );
+            </div>}
+        </div>
+    )
+
 }

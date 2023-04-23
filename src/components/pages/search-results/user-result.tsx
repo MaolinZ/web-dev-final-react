@@ -7,7 +7,7 @@ import {useNavigate} from "react-router";
 export default function UserResult(props: { user: UserProps }) {
 
     const {uid, username, biography, songs, followers} = props.user
-    const [image, setImage] = useState('')
+    const [image, setImage] = useState('https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png')
     const navigate = useNavigate()
 
     const trunc_name = Common.truncate(username!, 18)
@@ -31,8 +31,7 @@ export default function UserResult(props: { user: UserProps }) {
              }}>
             <img
                 className={'w-12 h-12 rounded-full bg-white'}
-                src={image == '' ? 'https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png' :
-                    image}
+                src={image}
                 alt=""/>
             <div className={'ml-4'}>
                 <p className={'text-left text-sm text-white'}>{trunc_name}</p>

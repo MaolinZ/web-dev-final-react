@@ -20,7 +20,7 @@ export default function ReviewList(props: { songUri: string }) {
     return (
         <div>
             {!loading ?
-                <div className={'review-item'}>
+                <div className={'review-list m-auto w-full'}>
                     {reviews.map((r) => <Review review={r}/>)}
                 </div>
                 :

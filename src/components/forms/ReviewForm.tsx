@@ -7,6 +7,8 @@ import {useNavigate} from "react-router";
 import {Link} from "react-router-dom";
 import {IconContext} from 'react-icons'
 import {IoHeart, IoHeartDislike} from "react-icons/io5";
+import {getUserById} from "../services/user-services";
+import {UserProps} from "../props/UserProps";
 
 export default function ReviewForm(props: { songUri: string }) {
     const nav = useNavigate();
@@ -17,7 +19,9 @@ export default function ReviewForm(props: { songUri: string }) {
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (auth.currentUser) {
+            const user:UserProps = await getUserById(auth.currentUser.uid)
             const response = await addReview({
+                "username": user.username,
                 "description": description,
                 "song_uri": props.songUri,
                 "uid": auth.currentUser.uid,

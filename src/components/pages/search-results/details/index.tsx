@@ -74,7 +74,7 @@ export default function Details() {
                 <>
                     <Topbar />
                     <div className={'m-auto w-full lg:w-8/12' +
-                        ' bg-spotify-gray p-4 text-white'}>
+                        ' bg-spotify-gray p-4 pt-8 text-white'}>
                         <div className={'bg-spotify-dark m-auto px-8' +
                             ' py-8 w-fit'}>
                             <img
@@ -88,7 +88,7 @@ export default function Details() {
                             </audio>}
                         </div>
                         <div className={'w-fit mx-auto md:flex' +
-                            ' md:items-center'}>
+                            ' md:items-center mt-6'}>
                             <Stat title={'Key'}
                                 value={toKey(features?.key as number, features?.mode as number)} />
                             <Stat title={'BPM'}
@@ -101,12 +101,15 @@ export default function Details() {
                         </div>
                         <div>
                             <h1
-                                className={`text-white font-medium text-4xl mb-5
-                                pb-5 m-auto w-fit`}
+                                className={`text-white font-medium text-4xl mb-10
+                                mt-20 pb-5 m-auto w-fit px-20`}
                                 style={{borderBottom: 'gray 1px' +
                                         ' solid'}}>
                                 REVIEWS</h1>
-                            <ReviewList songUri={uri!} />
+                            <div className={'w-full md:w-8/12 2xl:w-6/12' +
+                                '  m-auto'}>
+                                <ReviewList songUri={uri!} />
+                            </div>
                         </div>
                     </div>
                 </>
