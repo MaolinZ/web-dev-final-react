@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import React, {useEffect, useState} from "react";
+import {useParams} from "react-router";
 import * as service from "../../../services/spotify-services"
 import Topbar from "../../../topbar";
 import Stat from "./stat";
 import ReviewForm from "../../../forms/ReviewForm";
-import { addSongmetrics, getSongmetricsById } from "../../../services/songmetrics-services";
-import { SongmetricsProps } from "../../../props/SongmetricsProps";
+import {addSongmetrics} from "../../../services/songmetrics-services";
 import ReviewList from "./review/review-list";
 
 export default function Details() {
@@ -13,7 +12,6 @@ export default function Details() {
     const [song, setSong] = useState<SpotifyApi.TrackObjectFull>()
     const [features, setFeatures] = useState<SpotifyApi.AudioFeaturesResponse>()
     const [loading, setLoading] = useState(true)
-    //const [songmetrics, setSongmetrics] = useState<SongmetricsProps>({});
     const { uri } = useParams()
 
     useEffect(() => {
@@ -29,8 +27,6 @@ export default function Details() {
 
         const initSongmetrics = async (song_uri: string) => {
             await addSongmetrics(song_uri);
-            //const response = await getSongmetricsById(song_uri);
-            //setSongmetrics(response);
         }
 
         setLoading(true)
@@ -78,18 +74,21 @@ export default function Details() {
                 <>
                     <Topbar />
                     <div className={'m-auto w-full lg:w-8/12' +
-                        ' bg-spotify-gray p-4 text-white'}>
-                        <img
-                            className={'mx-auto my-4'}
-                            src={song?.album.images.at(1)!.url}
-                            alt="" />
-                        <h1 className={'text-white'}>{song?.name}</h1>
-                        <h1 className={'text-gray-500'}>{song?.artists.at(0)!.name}</h1>
-                        {song?.preview_url == null ? '' : <audio className={'audio-preview m-auto mt-6'} controls>
-                            <source src={song?.preview_url} type="audio/mp3" />
-                        </audio>}
+                        ' bg-spotify-gray p-4 pt-8 text-white'}>
+                        <div className={'bg-spotify-dark m-auto px-8' +
+                            ' py-8 w-fit'}>
+                            <img
+                                className={'mx-auto my-2'}
+                                src={song?.album.images.at(1)!.url}
+                                alt="" />
+                            <h1 className={'text-white py-2 font-bold'}>{song?.name}</h1>
+                            <h1 className={'text-gray-500'}>{song?.artists.at(0)!.name}</h1>
+                            {song?.preview_url == null ? '' : <audio className={'audio-preview m-auto mt-6'} controls>
+                                <source src={song?.preview_url} type="audio/mp3" />
+                            </audio>}
+                        </div>
                         <div className={'w-fit mx-auto md:flex' +
-                            ' md:items-center'}>
+                            ' md:items-center mt-6'}>
                             <Stat title={'Key'}
                                 value={toKey(features?.key as number, features?.mode as number)} />
                             <Stat title={'BPM'}
@@ -97,12 +96,21 @@ export default function Details() {
                             <Stat title={'Duration'}
                                 value={toISO(features?.duration_ms as number)} />
                         </div>
-                    </div>
-                    <div>
-                        <ReviewForm songUri={uri!} />
-                    </div>
-                    <div>
-                        <ReviewList songUri={uri!} />
+                        <div className={'my-6'}>
+                            <ReviewForm songUri={uri!} />
+                        </div>
+                        <div>
+                            <h1
+                                className={`text-white font-medium text-4xl mb-10
+                                mt-20 pb-5 m-auto w-fit px-20`}
+                                style={{borderBottom: 'gray 1px' +
+                                        ' solid'}}>
+                                REVIEWS</h1>
+                            <div className={'w-full md:w-8/12 2xl:w-6/12' +
+                                '  m-auto'}>
+                                <ReviewList songUri={uri!} />
+                            </div>
+                        </div>
                     </div>
                 </>
             }
