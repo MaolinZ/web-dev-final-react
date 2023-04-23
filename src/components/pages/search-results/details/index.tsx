@@ -43,7 +43,6 @@ export default function Details() {
     useEffect(() => {
         const getReviews = async () => {
             const response = await getReviewsBySong(uri!)
-            console.log(response)
             setReviews(response)
         }
 
