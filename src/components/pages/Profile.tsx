@@ -239,7 +239,7 @@ export default function Profile() {
                             REVIEWS</h1>
                         <div className={'w-full md:w-8/12 2xl:w-6/12' +
                             '  m-auto'}>
-                            <ReviewList reviews={reviews}/>
+                            <ReviewList reviews={reviews} isAdmin={isAdmin}/>
                         </div>
                     </div>
                 }

@@ -6,9 +6,9 @@ import {auth} from "../../../../config/firebase";
 import {ImCross} from "react-icons/im";
 import {deleteReviewById} from "../../../../services/review-services";
 
-export default function Review(props: { review: ReviewProps }, isAdmin: boolean = false) {
+export default function Review(props: { review: ReviewProps, isAdmin?: boolean }) {
 
-    const {review} = props
+    const {review, isAdmin} = props
 
     const [image, setImage] = useState<string>()
     const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export default function Review(props: { review: ReviewProps }, isAdmin: boolean 
     }
 
     const canDelete = () => {
-        if (auth.currentUser) {
+        if (auth.currentUser !== null) {
             return isAdmin || auth.currentUser.uid == review.uid
         }
         return false
